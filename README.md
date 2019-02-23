@@ -1,5 +1,6 @@
 # BTP
 
+Logiciel de gestion d'une PME du BTP
 
 ## TODO
 
