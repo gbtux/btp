@@ -1,16 +1,19 @@
 <template>
-    <v-layout row wrap>
-        <v-flex xs10><h4>{{ ligne.titre }}</h4></v-flex>
-        <v-flex xs2></v-flex>
-        <v-divider></v-divider>
-    </v-layout>
+    <v-list-tile>
+        <LigneArticle v-for="article in sousPoste.articles" :key="article.id" :ligne="article" :sousPoste="sousPoste.id" :poste="poste.id">
+        </LigneArticle>
+    </v-list-tile>
 </template>
 
 <script>
+    import LigneArticle from "./LigneArticle";
+
     export default {
         name: "LigneSousPoste",
+        components: {LigneArticle},
         props: {
-            ligne: Object
+            sousPoste: Object,
+            poste: Object
         }
     }
 </script>

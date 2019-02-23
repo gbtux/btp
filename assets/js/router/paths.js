@@ -68,11 +68,43 @@ export default [
             )
     },
     {
+        path: '/estimations/:id/planning',
+        name: 'Planning',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/estimations/planning/Planning.vue`
+        )
+    },
+    {
         path: '/estimations/:id',
         name: 'Estimation',
         component: () => import(
             /* webpackChunkName: "routes" */
             `../views/estimations/Estimation.vue`
+        )
+    },
+    {
+        path: '/personnels',
+        name: 'Personnels',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/personnels/Liste.vue`
+            )
+    },
+    {
+        path: '/fournisseurs',
+        name: 'Fournisseurs',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/fournisseurs/Liste.vue`
+            )
+    },
+    {
+        path: '/contacts',
+        name: 'Contacts',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/contacts/Liste.vue`
             )
     }
 ]

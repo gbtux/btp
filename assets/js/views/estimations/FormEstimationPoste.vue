@@ -3,10 +3,11 @@
         <h1>Créer un poste</h1>
         <v-form>
             <v-text-field
-                    v-model="nomPoste"
+                    v-model="poste.titre"
                     label="Nom du poste"
                     required
             ></v-text-field>
+            <wysiwyg v-model="poste.commentaire" />
             <v-btn color="primary" @click="submit">Créer</v-btn>
             <v-btn @click="clear">annuler</v-btn>
         </v-form>
@@ -14,6 +15,12 @@
 </template>
 
 <script>
+
+    import Vue from "vue"
+    import wysiwyg from "vue-wysiwyg"
+    Vue.use(wysiwyg, {})
+    import "vue-wysiwyg/dist/vueWysiwyg.css"
+
     export default {
         name: "FormEstimationPoste",
         props: {
@@ -21,7 +28,10 @@
         },
         data() {
             return {
-                nomPoste: ''
+                poste: {
+                    titre: '',
+                    commentaire: ''
+                }
             }
         },
         methods: {
@@ -29,8 +39,9 @@
                 this.$root.$emit('closeRightDrawer')
             },
             submit() {
-                this.$store.dispatch('estimation/createPoste', {estimationId: this.estimation, poste: this.nomPoste}).then(() => {
-                    this.nomPoste = ''
+                this.$store.dispatch('estimation/createPoste', {estimationId: this.estimation, poste: this.poste}).then(() => {
+                    this.poste.titre = ''
+                    this.poste.commentaire = ''
                     this.$root.$emit('closeRightDrawer')
                 })
             }

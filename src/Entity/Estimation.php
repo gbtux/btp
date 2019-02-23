@@ -76,18 +76,21 @@ class Estimation
      */
     private $totalTVA20 = 0;
 
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\DevisPoste", mappedBy="estimation")
      * @Serializer\Groups({"simple","chantier","lignes"})
      */
     private $postes;
 
-    
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\EventTask", mappedBy="estimation")
+     */
+    private $taches;
 
     public function __construct()
     {
         $this->postes = new ArrayCollection();
+        $this->taches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,6 +216,37 @@ class Estimation
     public function setChantier(string $chantier): self
     {
         $this->chantier = $chantier;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EventTask[]
+     */
+    public function getTaches(): Collection
+    {
+        return $this->taches;
+    }
+
+    public function addTach(EventTask $tach): self
+    {
+        if (!$this->taches->contains($tach)) {
+            $this->taches[] = $tach;
+            $tach->setEstimation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTach(EventTask $tach): self
+    {
+        if ($this->taches->contains($tach)) {
+            $this->taches->removeElement($tach);
+            // set the owning side to null (unless already changed)
+            if ($tach->getEstimation() === $this) {
+                $tach->setEstimation(null);
+            }
+        }
 
         return $this;
     }

@@ -35,30 +35,65 @@ class DevisPoste
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Estimation", inversedBy="postes")
-     * @ORM\JoinColumn(nullable=true)
      */
     private $estimation;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DevisLigne", mappedBy="poste")
-     * @Serializer\Groups({"simple","chantier","lignes"})
-     * @ORM\OrderBy({"ordre" = "ASC"})
+     * @var string
+     * @ORM\Column(type="text", length=255, nullable=true)
+     * @Serializer\Groups({"lignes","simple"})
      */
-    private $lignes;
+    private $commentaire;
+
+    /**
+     * @var Collection|DevisArticle[]
+     * @ORM\OneToMany(targetEntity="App\Entity\DevisArticle", mappedBy="poste")
+     * @Serializer\Groups({"simple","chantier","lignes"})
+     */
+    private $articles;
+
+    /**
+     * @var Collection|DevisSousPoste[]
+     * @ORM\OneToMany(targetEntity="App\Entity\DevisSousPoste", mappedBy="poste")
+     * @Serializer\Groups({"simple","chantier","lignes"})
+     * @SerializedName("sousPostes")
+     */
+    private $sousPostes;
 
     /**
      * @ORM\Column(type="integer")
      */
     private $ordre = 0;
 
+    /**
+     * @var float
+     * @ORM\Column(type="float")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("montantHT")
+     */
+    private $montantHT = 0;
+
+    /**
+     * @var float
+     * @ORM\Column(type="float")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("montantMO")
+     */
+    private $montantMO = 0;
+
+    /**
+     * Nombre d'heures
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("coutTotal")
+     */
+    private $coutTotal = 0;
+
     public function __construct()
     {
-        $this->lignes = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->articles = new ArrayCollection();
+        $this->sousPostes = new ArrayCollection();
     }
 
     public function setHashedId($hashedId): self
@@ -66,6 +101,11 @@ class DevisPoste
         $this->hashedId = $hashedId;
 
         return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getTitre(): ?string
@@ -80,14 +120,14 @@ class DevisPoste
         return $this;
     }
 
-    public function getEstimation(): ?Estimation
+    public function getCommentaire(): ?string
     {
-        return $this->estimation;
+        return $this->commentaire;
     }
 
-    public function setEstimation(?Estimation $estimation): self
+    public function setCommentaire(string $commentaire): self
     {
-        $this->estimation = $estimation;
+        $this->commentaire = $commentaire;
 
         return $this;
     }
@@ -104,34 +144,115 @@ class DevisPoste
         return $this;
     }
 
-    /**
-     * @return Collection|DevisLigne[]
-     */
-    public function getLignes(): Collection
+    public function getEstimation(): ?Estimation
     {
-        return $this->lignes;
+        return $this->estimation;
     }
 
-    public function addLigne(DevisLigne $ligne): self
+    public function setEstimation(?Estimation $estimation): self
     {
-        if (!$this->lignes->contains($ligne)) {
-            $this->lignes[] = $ligne;
-            $ligne->setPoste($this);
+        $this->estimation = $estimation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DevisArticle[]
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(DevisArticle $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles[] = $article;
+            $article->setPoste($this);
         }
 
         return $this;
     }
 
-    public function removeLigne(DevisLigne $ligne): self
+    public function removeArticle(DevisArticle $article): self
     {
-        if ($this->lignes->contains($ligne)) {
-            $this->lignes->removeElement($ligne);
+        if ($this->articles->contains($article)) {
+            $this->articles->removeElement($article);
             // set the owning side to null (unless already changed)
-            if ($ligne->getPoste() === $this) {
-                $ligne->setPoste(null);
+            if ($article->getPoste() === $this) {
+                $article->setPoste(null);
             }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection|DevisSousPoste[]
+     */
+    public function getSousPostes(): Collection
+    {
+        return $this->sousPostes;
+    }
+
+    public function addSousPoste(DevisSousPoste $sousPoste): self
+    {
+        if (!$this->sousPostes->contains($sousPoste)) {
+            $this->sousPostes[] = $sousPoste;
+            $sousPoste->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSousPoste(DevisSousPoste $sousPoste): self
+    {
+        if ($this->sousPostes->contains($sousPoste)) {
+            $this->sousPostes->removeElement($sousPoste);
+            // set the owning side to null (unless already changed)
+            if ($sousPoste->getPoste() === $this) {
+                $sousPoste->setPoste(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMontantHT(): ?float
+    {
+        return $this->montantHT;
+    }
+
+    public function setMontantHT(float $montantHT): self
+    {
+        $this->montantHT = $montantHT;
+
+        return $this;
+    }
+
+    public function getMontantMO(): ?float
+    {
+        return $this->montantMO;
+    }
+
+    public function setMontantMO(float $montantMO): self
+    {
+        $this->montantMO = $montantMO;
+
+        return $this;
+    }
+
+    public function getCoutTotal(): ?int
+    {
+        return $this->coutTotal;
+    }
+
+    public function setCoutTotal(int $coutTotal): self
+    {
+        $this->coutTotal = $coutTotal;
+
+        return $this;
+    }
+
+
 }

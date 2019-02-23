@@ -1,0 +1,14 @@
+.fc-button{
+    color: #fff;
+    background-color: #2196F3;
+    border-color: #2196F3;
+}
+.fc-state-hover, .fc-state-default{
+    color:#fff;
+    background-color:#2196F3;
+    background-image:none;
+}
+.fc-prev-button, .fc-next-button{
+    background-color: #193a9a;
+    border-color: #193a9a;
+}

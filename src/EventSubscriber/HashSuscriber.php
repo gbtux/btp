@@ -33,17 +33,7 @@ class HashSuscriber implements EventSubscriberInterface
             [
                 'event' => 'serializer.pre_serialize',
                 'method' => 'onPreSerializeData',
-                'class' => 'App\Entity\DevisLigne'
-            ],
-            [
-                'event' => 'serializer.pre_serialize',
-                'method' => 'onPreSerializeData',
-                'class' => 'App\Entity\DevisLigneArticle'
-            ],
-            [
-                'event' => 'serializer.pre_serialize',
-                'method' => 'onPreSerializeData',
-                'class' => 'App\Entity\DevisLigneCommentaires'
+                'class' => 'App\Entity\DevisArticle'
             ],
             [
                 'event' => 'serializer.pre_serialize',
@@ -53,12 +43,47 @@ class HashSuscriber implements EventSubscriberInterface
             [
                 'event' => 'serializer.pre_serialize',
                 'method' => 'onPreSerializeData',
-                'class' => 'App\Entity\DevisLigneSousPoste'
+                'class' => 'App\Entity\DevisSousPoste'
             ],
             [
                 'event' => 'serializer.pre_serialize',
                 'method' => 'onPreSerializeData',
                 'class' => 'App\Entity\Estimation'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\Personnel'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\PersonnelSpecialite'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\EventTask'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\Achat'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\AchatCategorie'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\Fournisseur'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\Contact'
             ]
         ];
     }

@@ -13,6 +13,7 @@ class DevisPosteType extends AbstractType
     {
         $builder
             ->add('titre')
+            ->add('commentaire')
         ;
     }
 

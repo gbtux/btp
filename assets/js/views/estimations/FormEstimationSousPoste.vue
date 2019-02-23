@@ -9,12 +9,14 @@
                     item-text="titre"
                     item-value="id"
                     v-model="poste"
+                    required
             ></v-select>
             <v-text-field
-                    v-model="nomSousPoste"
+                    v-model="sousPoste.titre"
                     label="Nom du sous poste"
                     required
             ></v-text-field>
+            <wysiwyg v-model="sousPoste.commentaire" />
             <v-btn color="primary" @click="submit">Créer</v-btn>
             <v-btn @click="clear">annuler</v-btn>
         </v-form>
@@ -24,6 +26,10 @@
 <script>
 
     import {mapGetters} from 'vuex'
+    import Vue from "vue"
+    import wysiwyg from "vue-wysiwyg"
+    Vue.use(wysiwyg, {})
+    import "vue-wysiwyg/dist/vueWysiwyg.css"
 
     export default {
         name: "FormEstimationSousPoste",
@@ -32,7 +38,10 @@
         },
         data() {
             return {
-                nomSousPoste: '',
+                sousPoste: {
+                    titre: '',
+                    commentaire: ''
+                },
                 poste: ''
             }
         },
@@ -44,8 +53,9 @@
                 this.$root.$emit('closeRightDrawer')
             },
             submit() {
-                this.$store.dispatch('estimation/createSousPoste', {estimationId: this.estimation, poste: this.poste, sousPoste: this.nomSousPoste}).then(() => {
-                    this.nomSousPoste = ''
+                this.$store.dispatch('estimation/createSousPoste', {estimationId: this.estimation, poste: this.poste, sousPoste: this.sousPoste}).then(() => {
+                    this.sousPoste.titre = ''
+                    this.sousPoste.commentaire = ''
                     this.$root.$emit('closeRightDrawer')
                 })
             }
