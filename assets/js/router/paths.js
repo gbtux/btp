@@ -106,5 +106,21 @@ export default [
             /* webpackChunkName: "routes" */
             `../views/contacts/Liste.vue`
             )
+    },
+    {
+        path: '/livraisons',
+        name: 'Livraisons',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/livraisons/Liste.vue`
+            )
+    },
+    {
+        path: '/chantiers',
+        name: 'Chantiers',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/chantiers/Liste.vue`
+            )
     }
 ]

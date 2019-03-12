@@ -6,7 +6,8 @@ export default {
     namespaced: true,
     state: {
         contacts: [],
-        contact: {}
+        contact: {},
+        chantiers: []
     },
 
     getters: {
@@ -15,6 +16,9 @@ export default {
         },
         contact: function (state) {
             return state.contact
+        },
+        chantiers: function (state) {
+            return state.chantiers
         }
     },
 
@@ -38,6 +42,9 @@ export default {
                 }
             })
             state.contacts = conts
+        },
+        setChantiers: function (state, {chantiers}) {
+            state.chantiers = chantiers
         }
     },
 
@@ -81,6 +88,18 @@ export default {
             return new Promise((resolve, reject) => {
                 Vue.http.put('/api/contacts/' + contactId, JSON.stringify(contact)).then(response => {
                     context.commit('updateContact', {contact: response.body})
+                    resolve()
+                }, response => {
+                    console.log(response)
+                    reject()
+                })
+            })
+        },
+
+        loadChantiers: function (context, {contact}) {
+            return new Promise((resolve, reject) => {
+                Vue.http.get('/api/contacts/' + contact + '/chantiers').then(response => {
+                    context.commit('setChantiers', {chantiers: response.body})
                     resolve()
                 }, response => {
                     console.log(response)

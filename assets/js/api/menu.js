@@ -11,10 +11,20 @@ const Menu =  [
             icon: 'perm_identity',
             name: 'Contacts'
         },{
+            title: 'Chantiers',
+            group: 'apps',
+            icon: 'brush',
+            name: 'Chantiers'
+        },{
             title: 'Estimations',
             group: 'apps',
             icon: 'view_list',
             name: 'Estimations'
+        },{
+            title: 'Livraisons',
+            group: 'apps',
+            icon: 'local_shipping',
+            name: 'Livraisons'
         },{
             title: 'Personnels',
             group: 'apps',
@@ -23,7 +33,7 @@ const Menu =  [
         },{
             title: 'Fournisseurs',
             group: 'apps',
-            icon: 'shop',
+            icon: 'contacts',
             name: 'Fournisseurs'
         }
     ]

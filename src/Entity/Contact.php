@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Contact
 {
@@ -85,10 +88,45 @@ class Contact
      */
     private $ville;
 
+    /**
+     * @var string
+     * @Serializer\Groups({"simple"})
+     */
+    private $fullname;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Chantier", mappedBy="client")
+     */
+    private $chantiers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Estimation", mappedBy="client")
+     */
+    private $estimations;
+
+    public function __construct()
+    {
+        $this->chantiers = new ArrayCollection();
+        $this->estimations = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFullname()
+    {
+        return $this->fullname;
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function updateFullname()
+    {
+        $this->fullname = sprintf('%s %s', $this->prenom, $this->nom);
     }
 
     public function setHashedId($hashedId)
@@ -202,6 +240,68 @@ class Contact
     public function setVille(?string $ville): self
     {
         $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chantier[]
+     */
+    public function getChantiers(): Collection
+    {
+        return $this->chantiers;
+    }
+
+    public function addChantier(Chantier $chantier): self
+    {
+        if (!$this->chantiers->contains($chantier)) {
+            $this->chantiers[] = $chantier;
+            $chantier->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChantier(Chantier $chantier): self
+    {
+        if ($this->chantiers->contains($chantier)) {
+            $this->chantiers->removeElement($chantier);
+            // set the owning side to null (unless already changed)
+            if ($chantier->getClient() === $this) {
+                $chantier->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Estimation[]
+     */
+    public function getEstimations(): Collection
+    {
+        return $this->estimations;
+    }
+
+    public function addEstimation(Estimation $estimation): self
+    {
+        if (!$this->estimations->contains($estimation)) {
+            $this->estimations[] = $estimation;
+            $estimation->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEstimation(Estimation $estimation): self
+    {
+        if ($this->estimations->contains($estimation)) {
+            $this->estimations->removeElement($estimation);
+            // set the owning side to null (unless already changed)
+            if ($estimation->getClient() === $this) {
+                $estimation->setClient(null);
+            }
+        }
 
         return $this;
     }

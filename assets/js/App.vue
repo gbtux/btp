@@ -86,8 +86,8 @@
             }
         }),
         mounted() {
-            this.$vuetify.theme.primary = '#193a9a'
-            console.log(this.$vuetify.theme.primary)
+            //this.$vuetify.theme.primary = '#193a9a'
+            //console.log(this.$vuetify.theme.primary)
         },
         methods: {
             openThemeSettings () {

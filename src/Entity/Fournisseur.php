@@ -156,9 +156,15 @@ class Fournisseur
      */
     private $dateCreation;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\BordereauLivraison", mappedBy="fournisseur")
+     */
+    private $bordereauLivraisons;
+
     public function __construct()
     {
         $this->achats = new ArrayCollection();
+        $this->bordereauLivraisons = new ArrayCollection();
     }
 
 
@@ -395,6 +401,37 @@ class Fournisseur
             // set the owning side to null (unless already changed)
             if ($achat->getFournisseur() === $this) {
                 $achat->setFournisseur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BordereauLivraison[]
+     */
+    public function getBordereauLivraisons(): Collection
+    {
+        return $this->bordereauLivraisons;
+    }
+
+    public function addBordereauLivraison(BordereauLivraison $bordereauLivraison): self
+    {
+        if (!$this->bordereauLivraisons->contains($bordereauLivraison)) {
+            $this->bordereauLivraisons[] = $bordereauLivraison;
+            $bordereauLivraison->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBordereauLivraison(BordereauLivraison $bordereauLivraison): self
+    {
+        if ($this->bordereauLivraisons->contains($bordereauLivraison)) {
+            $this->bordereauLivraisons->removeElement($bordereauLivraison);
+            // set the owning side to null (unless already changed)
+            if ($bordereauLivraison->getFournisseur() === $this) {
+                $bordereauLivraison->setFournisseur(null);
             }
         }
 

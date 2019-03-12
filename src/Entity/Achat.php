@@ -369,30 +369,6 @@ class Achat
         return $this;
     }
 
-    public function getContact(): ?Contact
-    {
-        return $this->contact;
-    }
-
-    public function setContact(?Contact $contact): self
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    public function getChantier(): ?Chantier
-    {
-        return $this->chantier;
-    }
-
-    public function setChantier(?Chantier $chantier): self
-    {
-        $this->chantier = $chantier;
-
-        return $this;
-    }
-
     public function getDocument(): ?string
     {
         return $this->document;

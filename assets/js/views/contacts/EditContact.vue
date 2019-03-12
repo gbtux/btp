@@ -7,6 +7,9 @@
             <v-text-field v-model="lcontact.email" label="Email"></v-text-field>
             <v-text-field v-model="lcontact.mobile" label="Mobile"></v-text-field>
             <v-text-field v-model="lcontact.telephone" label="Téléphone"></v-text-field>
+            <v-text-field v-model="lcontact.adresse" label="Adresse"></v-text-field>
+            <v-text-field v-model="lcontact.codePostal" label="Code postal"></v-text-field>
+            <v-text-field v-model="lcontact.ville" label="Ville"></v-text-field>
             <v-btn color="primary" @click="submit">Enregistrer</v-btn>
             <v-btn @click="clear">annuler</v-btn>
         </v-form>

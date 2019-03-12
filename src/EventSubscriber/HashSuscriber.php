@@ -84,6 +84,16 @@ class HashSuscriber implements EventSubscriberInterface
                 'event' => 'serializer.pre_serialize',
                 'method' => 'onPreSerializeData',
                 'class' => 'App\Entity\Contact'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\BordereauLivraison'
+            ],
+            [
+                'event' => 'serializer.pre_serialize',
+                'method' => 'onPreSerializeData',
+                'class' => 'App\Entity\Chantier'
             ]
         ];
     }

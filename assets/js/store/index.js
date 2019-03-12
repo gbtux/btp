@@ -7,6 +7,8 @@ import estimation from './modules/estimation'
 import personnel from './modules/personnel'
 import fournisseur from './modules/fournisseur'
 import contact from './modules/contact'
+import livraison from './modules/livraison'
+import chantier from './modules/chantier'
 
 export default new Vuex.Store({
     strict: true,
@@ -14,6 +16,8 @@ export default new Vuex.Store({
         estimation,
         personnel,
         fournisseur,
-        contact
+        contact,
+        livraison,
+        chantier
     }
 })

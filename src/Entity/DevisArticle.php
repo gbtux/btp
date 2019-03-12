@@ -123,6 +123,23 @@ class DevisArticle
     private $ordre = 0;
 
     /**
+     * @var float
+     * @ORM\Column(type="float")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("montantMO")
+     */
+    private $montantMO = 0;
+
+    /**
+     * Nombre d'heures
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("coutTotal")
+     */
+    private $coutTotal = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\EventTask", mappedBy="resource")
      */
     private $taches;
@@ -303,6 +320,30 @@ class DevisArticle
                 $tach->setResource(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMontantMO(): ?float
+    {
+        return $this->montantMO;
+    }
+
+    public function setMontantMO(float $montantMO): self
+    {
+        $this->montantMO = $montantMO;
+
+        return $this;
+    }
+
+    public function getCoutTotal(): ?int
+    {
+        return $this->coutTotal;
+    }
+
+    public function setCoutTotal(int $coutTotal): self
+    {
+        $this->coutTotal = $coutTotal;
 
         return $this;
     }

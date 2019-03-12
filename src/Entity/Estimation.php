@@ -28,25 +28,28 @@ class Estimation
     private $hashedId;
 
     /**
-     * @var string
-     * @ORM\Column(name="client")
-     * @Serializer\Groups({"simple","chantier"})
-     */
-    private $client;
-
-    /**
-     * @var string
-     * @ORM\Column(name="chantier")
-     * @Serializer\Groups({"simple","chantier"})
-     */
-    private $chantier;
-
-    /**
      * @ORM\Column(type="float", nullable=true)
      * @Serializer\Groups({"simple"})
      * @SerializedName("totalHT")
      */
     private $totalHT = 0;
+
+    /**
+     * @var float
+     * @ORM\Column(type="float")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("montantMO")
+     */
+    private $montantMO = 0;
+
+    /**
+     * Nombre d'heures
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Serializer\Groups({"lignes","simple"})
+     * @SerializedName("coutTotal")
+     */
+    private $coutTotal = 0;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -86,6 +89,21 @@ class Estimation
      * @ORM\OneToMany(targetEntity="App\Entity\EventTask", mappedBy="estimation")
      */
     private $taches;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Contact", inversedBy="estimations")
+     * @ORM\JoinColumn(nullable=false)
+     * @Serializer\Groups({"simple","chantier","lignes"})
+     */
+    private $client;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Chantier", inversedBy="estimation", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Serializer\Groups({"simple","chantier","lignes"})
+     */
+    private $chantier;
+
 
     public function __construct()
     {
@@ -132,18 +150,6 @@ class Estimation
                 $poste->setEstimation(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getClient(): ?string
-    {
-        return $this->client;
-    }
-
-    public function setClient(string $client): self
-    {
-        $this->client = $client;
 
         return $this;
     }
@@ -208,18 +214,6 @@ class Estimation
         return $this;
     }
 
-    public function getChantier(): ?string
-    {
-        return $this->chantier;
-    }
-
-    public function setChantier(string $chantier): self
-    {
-        $this->chantier = $chantier;
-
-        return $this;
-    }
-
     /**
      * @return Collection|EventTask[]
      */
@@ -247,6 +241,54 @@ class Estimation
                 $tach->setEstimation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Contact
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Contact $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getChantier(): ?Chantier
+    {
+        return $this->chantier;
+    }
+
+    public function setChantier(Chantier $chantier): self
+    {
+        $this->chantier = $chantier;
+
+        return $this;
+    }
+
+    public function getMontantMO(): ?float
+    {
+        return $this->montantMO;
+    }
+
+    public function setMontantMO(float $montantMO): self
+    {
+        $this->montantMO = $montantMO;
+
+        return $this;
+    }
+
+    public function getCoutTotal(): ?int
+    {
+        return $this->coutTotal;
+    }
+
+    public function setCoutTotal(int $coutTotal): self
+    {
+        $this->coutTotal = $coutTotal;
 
         return $this;
     }

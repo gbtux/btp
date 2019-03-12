@@ -3,8 +3,8 @@
         <v-container grid-list-xl fluid>
             <v-layout row wrap>
                 <v-flex sm12>
-                    <h3>Estimation : {{ estimation.chantier }}</h3>
-                    <h4>Client : {{ estimation.client }}</h4>
+                    <h3>Estimation : {{ estimation.chantier.libelle }}</h3>
+                    <h4>Client : {{ estimation.client.fullname }}</h4>
                 </v-flex>
                 <v-flex lg12>
                     <v-card>
@@ -150,7 +150,7 @@
             ...mapGetters('estimation', {estimation: 'estimation'}),
         },
         mounted () {
-            this.$store.dispatch('estimation/loadEstimation', this.$route.params.id)
+            this.$store.dispatch('estimation/loadEstimation', {id:this.$route.params.id})
             this.$root.$on('closeRightDrawer', () => {
                 this.rightDrawer = false
             })

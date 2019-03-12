@@ -7,6 +7,9 @@
             <v-text-field v-model="contact.email" label="Email"></v-text-field>
             <v-text-field v-model="contact.mobile" label="Mobile"></v-text-field>
             <v-text-field v-model="contact.telephone" label="Téléphone"></v-text-field>
+            <v-text-field v-model="contact.adresse" label="Adresse"></v-text-field>
+            <v-text-field v-model="contact.codePostal" label="Code postal"></v-text-field>
+            <v-text-field v-model="contact.ville" label="Ville"></v-text-field>
             <v-btn color="primary" @click="submit">Enregistrer</v-btn>
             <v-btn @click="clear">annuler</v-btn>
         </v-form>
@@ -23,7 +26,10 @@
                     nom: '',
                     email: '',
                     mobile: '',
-                    telephone: ''
+                    telephone: '',
+                    adresse: '',
+                    codePostal: '',
+                    ville: ''
                 }
             }
         },

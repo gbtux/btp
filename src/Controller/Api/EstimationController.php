@@ -5,11 +5,13 @@ namespace App\Controller\Api;
 use App\Entity\DevisArticle;
 use App\Entity\DevisPoste;
 use App\Entity\DevisSousPoste;
+use App\Entity\Estimation;
 use App\Entity\EventTask;
 use App\Form\DevisArticleType;
 use App\Form\DevisLigneCommentairesType;
 use App\Form\DevisPosteType;
 use App\Form\DevisSousPosteType;
+use App\Form\EstimationType;
 use App\Form\EventTaskType;
 use Hashids\Hashids;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -301,13 +303,25 @@ class EstimationController extends AbstractController
     }
 
     /**
-     * @Rest\Get("")
-     * @Rest\View(serializerGroups={"simple","lignes"})
+     * @Rest\Put("/{hashedId}")
+     * @Rest\View(serializerGroups={"simple","chantier","lignes"})
      */
-    public function liste()
+    public function updateEstimation(Request $request, $hashedId, Hashids $hashids)
     {
-        $estimations = $this->getDoctrine()->getRepository('App:Estimation')->findAll();
-        return $estimations;
+        $id = $hashids->decode($hashedId);
+        $estimation = $this->getDoctrine()->getRepository('App:Estimation')->findOneBy(['id'=>$id]);
+        if(!$estimation)
+            throw new NotFoundHttpException('Estimation not found');
+        $form = $this->createForm(EstimationType::class, $estimation);
+        $form->submit($request->request->all());
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($estimation);
+            $em->flush();
+
+            return $estimation;
+        }
+        return new Response((string) $form->getErrors(true, false), 500);
     }
 
     /**
@@ -321,6 +335,35 @@ class EstimationController extends AbstractController
         if(!$devis)
             throw new NotFoundHttpException('Estimation not found');
         return $devis;
+    }
+
+    /**
+     * @Rest\Post("")
+     * @Rest\View(serializerGroups={"simple","lignes"})
+     */
+    public function create(Request $request)
+    {
+        $estimation = new Estimation();
+        $form = $this->createForm(EstimationType::class, $estimation);
+        $form->submit($request->request->all());
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($estimation);
+            $em->flush();
+
+            return $estimation;
+        }
+        return new Response((string) $form->getErrors(true, false), 500);
+    }
+
+    /**
+     * @Rest\Get("")
+     * @Rest\View(serializerGroups={"simple","lignes"})
+     */
+    public function liste()
+    {
+        $estimations = $this->getDoctrine()->getRepository('App:Estimation')->findAll();
+        return $estimations;
     }
 
 }

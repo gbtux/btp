@@ -65,6 +65,20 @@ export default {
         },
         setTasks: function (state, {tasks}) {
             state.tasks = tasks
+        },
+        updateEstimation: function (state, {estimation}) {
+            let ests = []
+            state.estimations.forEach(e => {
+                if(e.id === estimation.id) {
+                    ests.push(estimation)
+                }else{
+                    ests.push(e)
+                }
+            })
+            state.estimations = ests
+        },
+        addEstimation: function (state, {estimation}) {
+            state.estimations.push(estimation)
         }
     },
 
@@ -79,7 +93,7 @@ export default {
              })
         },
 
-        loadEstimation: async function (context, id) {
+        loadEstimation: async function (context, {id}) {
             await Vue.http.get('/api/estimations/' + id).then(response => {
                 context.commit('setEstimation', {estimation: response.body})
             }, response => {
@@ -258,6 +272,42 @@ export default {
         updateTask: async function(context, {taskId, task}) {
             return new Promise((resolve, reject) => {
                 Vue.http.put('/api/estimations/' + taskId +'/task', task).then(response => {
+                    resolve()
+                }, response => {
+                    reject()
+                    console.log(response)
+                })
+            })
+        },
+
+        saveEstimation: async function(context, {estimationId, estimation}) {
+            delete estimation.postes
+            delete estimation.id
+            return new Promise((resolve, reject) => {
+                Vue.http.put('/api/estimations/' + estimationId , {
+                    totalHT: estimation.totalHT,
+                    montantMO: estimation.montantMO,
+                    coutTotal: estimation.coutTotal,
+                    totalTTC: estimation.totalTTC,
+                    totalTVA55: estimation.totalTVA55,
+                    totalTVA10: estimation.totalTVA10,
+                    totalTVA20: estimation.totalTVA20,
+                    client: estimation.client ? estimation.client.id : null,
+                    chantier: estimation.chantier ? estimation.chantier.id : null
+                }).then(response => {
+                    context.commit('updateEstimation', {estimation : response.body})
+                    resolve()
+                }, response => {
+                    reject()
+                    console.log(response)
+                })
+            })
+        },
+
+        createEstimation: async function(context, {estimation}) {
+            return new Promise((resolve, reject) => {
+                Vue.http.post('/api/estimations', estimation).then(response => {
+                    context.commit('addEstimation', {estimation: response.body})
                     resolve()
                 }, response => {
                     reject()

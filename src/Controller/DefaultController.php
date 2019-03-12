@@ -12,6 +12,9 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        return $this->render('default/index.html.twig');
+        $uriPrefixBL = $this->getParameter('vich_uploader.mappings')['bl_document']['uri_prefix'];
+        return $this->render('default/index.html.twig', [
+            'uri_prefix_bl' => $uriPrefixBL
+        ]);
     }
 }
