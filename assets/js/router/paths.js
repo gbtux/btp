@@ -122,5 +122,13 @@ export default [
             /* webpackChunkName: "routes" */
             `../views/chantiers/Liste.vue`
             )
+    },
+    {
+        path: '/tests/:id',
+        name: 'Test',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/Tests.vue`
+            )
     }
 ]

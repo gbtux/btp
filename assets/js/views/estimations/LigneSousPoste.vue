@@ -1,7 +1,9 @@
 <template>
     <v-list-tile>
-        <LigneArticle v-for="article in sousPoste.articles" :key="article.id" :ligne="article" :sousPoste="sousPoste.id" :poste="poste.id">
-        </LigneArticle>
+        <v-flex xs12>
+            <LigneArticle v-for="article in sousPoste.articles" :key="article.id" :ligne="article" :sousPoste="sousPoste.id" :poste="poste.id">
+            </LigneArticle>
+        </v-flex>
     </v-list-tile>
 </template>
 
