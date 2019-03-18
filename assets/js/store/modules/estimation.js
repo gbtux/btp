@@ -7,7 +7,13 @@ export default {
     state: {
         estimations: [],
         estimation: {
-            postes:[]
+            postes:[],
+            chantier: {
+                libelle: ''
+            },
+            client: {
+                fullname: ''
+            }
         },
         ressources: [],
         personnels: [],
@@ -123,11 +129,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    Vue.prototype.$swal({
-                        title: "So bad !",
-                        text: "Un problème est apparu !",
-                        icon: "error",
-                    })
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -138,11 +144,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    Vue.prototype.$swal({
-                        title: "So bad !",
-                        text: "Un problème est apparu !",
-                        icon: "error",
-                    })
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -153,11 +159,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    Vue.prototype.$swal({
-                        title: "So bad !",
-                        text: "Un problème est apparu !",
-                        icon: "error",
-                    })
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -172,11 +178,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    Vue.prototype.$swal({
-                        title: "So bad !",
-                        text: "Un problème est apparu !",
-                        icon: "error",
-                    })
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -191,11 +197,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    Vue.prototype.$swal({
-                        title: "So bad !",
-                        text: "Un problème est apparu !",
-                        icon: "error",
-                    })
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -215,11 +221,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    Vue.prototype.$swal({
-                        title: "So bad !",
-                        text: "Un problème est apparu !",
-                        icon: "error",
-                    })
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -231,7 +237,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -242,7 +252,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    };
                 })
             })
         },
@@ -252,7 +266,11 @@ export default {
                 Vue.http.get('/api/personnels').then(response => {
                     context.commit('setPersonnels', {personnels: response.body})
                 }, response => {
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    }
                 })
             })
         },
@@ -264,7 +282,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    }
                 })
             })
         },
@@ -275,7 +297,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    }
                 })
             })
         },
@@ -299,7 +325,11 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    }
                 })
             })
         },
@@ -311,7 +341,27 @@ export default {
                     resolve()
                 }, response => {
                     reject()
-                    console.log(response)
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    }
+                })
+            })
+        },
+
+        deleteArticle: async function(context, {estimation, article}) {
+            return new Promise((resolve, reject) => {
+                Vue.http.delete('/api/estimations/'+ estimation + '/article/' + article).then(response => {
+                    context.commit('setEstimation', {estimation: response.body})
+                    resolve()
+                }, response => {
+                    reject()
+                    window.getApp.snackbar = {
+                        show: true,
+                        color: 'error',
+                        text: "Une erreur s'est produite :("
+                    }
                 })
             })
         }

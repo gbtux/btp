@@ -15,11 +15,13 @@ import App from "./App.vue"
 import router from "./router/"
 import store from "./store/"
 import VueResource from 'vue-resource'
+import VuetifyConfirm from 'vuetify-confirm'
 
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import 'font-awesome/css/font-awesome.css'
 
 Vue.use(VueResource)
+Vue.use(VuetifyConfirm)
 
 Vue.config.productionTip = false;
 

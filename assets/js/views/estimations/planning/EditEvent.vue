@@ -233,7 +233,7 @@
             submit() {
                 let execus = []
                 this.levent.executants.forEach(e => {
-                    execus.push(e.id)
+                    execus.push(e)
                 })
                 let task = {
                     dateDebut: this.levent.start.format('DD/MM/YYYY HH:mm'),

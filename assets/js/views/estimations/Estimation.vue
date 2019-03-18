@@ -3,101 +3,155 @@
         <v-container grid-list-xl fluid>
             <v-layout row wrap>
                 <v-flex sm12>
-                    <h3>Estimation : {{ estimation.chantier.libelle }}</h3>
+                    <h3>Estimation du chantier : {{ estimation.chantier.libelle }}</h3>
                     <h4>Client : {{ estimation.client.fullname }}</h4>
                 </v-flex>
                 <v-flex lg12>
                     <v-card>
-                        <v-form>
-                            <v-btn color="error" @click="createPoste">Créer un poste</v-btn>
-                            <v-btn color="warning" @click="createSousPoste">Créer un sous poste</v-btn>
-                            <v-btn color="success" @click="createArticle">Créer un article</v-btn>
-                        </v-form>
+                        <v-layout row>
+                            <v-flex lg6>
+                                <v-form>
+                                    <v-btn color="error" @click="createPoste">Créer un poste</v-btn>
+                                    <v-btn color="warning" @click="createSousPoste">Créer un sous poste</v-btn>
+                                    <v-btn color="success" @click="createArticle">Créer un article</v-btn>
+                                </v-form>
+                            </v-flex>
+                            <v-flex lg6>
+                                <h3 style="text-align: right; margin-right: 5px;">
+                                    {{ estimation.totalHT}} € HT facturés | {{ estimation.montantMO}} heures MOE | {{ estimation.coutTotal}} € d'achats
+                                </h3>
+                            </v-flex>
+                        </v-layout>
                     </v-card>
                 </v-flex>
                 <v-flex lg12>
                     <v-card>
-                        <v-expansion-panel>
+                        <v-expansion-panel id="estimation">
                             <v-expansion-panel-content v-for="poste in estimation.postes" :key="poste.id">
                                 <div slot="header">
                                     <v-container style="padding: 0">
                                         <v-layout row>
-                                            <h3 class="flex xs11"><span class="text-capitalize">{{ poste.titre }}</span> ({{poste.montantHT}}€ facturés - {{ poste.montantMO}} heures MOE - {{ poste.coutTotal}}€ d'achats)</h3>
-                                            <div class="flex xs1">
+                                            <h3 class="flex xs11 indigo white--text" style="">
+                                                <span class="text-capitalize">{{ poste.titre }}</span> ({{poste.montantHT}}€ facturés - {{ poste.montantMO}} heures MOE - {{ poste.coutTotal}} € d'achats)
+                                            </h3>
+                                            <!--
+                                            <v-toolbar dark color="primary" class="flex xs1">
+                                                <v-btn icon color="primary" small>
+                                                    <v-icon>edit</v-icon>
+                                                </v-btn>
+                                                <v-btn icon color="pink" small>
+                                                    <v-icon>delete</v-icon>
+                                                </v-btn>
+                                            </v-toolbar>
+                                            -->
+                                            <!-- <div class="flex xs1" style="padding-top: 4px">
                                                 <v-btn depressed outline icon fab dark color="primary" small  style="margin: 0" @click.prevent="posteEdit(poste)">
                                                     <v-icon>edit</v-icon>
                                                 </v-btn>
                                                 <v-btn depressed outline icon fab dark color="pink" small style="margin: 0">
                                                     <v-icon>delete</v-icon>
                                                 </v-btn>
-                                            </div>
+                                            </div> -->
+
                                         </v-layout>
                                     </v-container>
                                 </div>
                                 <v-card>
-                                    <v-list subheader>
-                                        <v-subheader v-if="poste.commentaire !== null">
-                                            {{ poste.commentaire }}
-                                        </v-subheader>
-                                        <v-list-tile  v-if="poste.articles.length > 0">
-                                            <v-list-tile-content>
-                                                <v-container fluid>
-                                                    <v-layout row wrap>
-                                                        <v-flex xs1>Référence</v-flex>
-                                                        <v-flex xs3>Désignation</v-flex>
-                                                        <v-flex xs1>Quantité</v-flex>
-                                                        <v-flex xs2>PUB HT</v-flex>
-                                                        <v-flex xs1>TVA</v-flex>
-                                                        <v-flex xs1>Montant HT</v-flex>
-                                                        <v-flex xs1>M.O.E</v-flex>
-                                                        <v-flex xs1>Achats</v-flex>
-                                                        <v-flex xs1></v-flex>
+                                    <v-layout row wrap>
+                                        <v-flex lg12>
+                                            <v-card>
+                                                <v-layout row v-if="poste.commentaire">
+                                                    <v-flex xs11>
+                                                        <v-card-text v-html="poste.commentaire" style="padding-top: 2px"></v-card-text>
+                                                    </v-flex>
+                                                    <div class="flex xs1">
+                                                        <v-btn depressed outline icon fab dark color="primary" small  style="margin: 0" @click.prevent="posteEdit(poste)">
+                                                            <v-icon>edit</v-icon>
+                                                        </v-btn>
+                                                        <v-btn depressed outline icon fab dark color="pink" small style="margin: 0">
+                                                            <v-icon>delete</v-icon>
+                                                        </v-btn>
+                                                    </div>
+                                                </v-layout>
+                                                <v-layout row>
+                                                    <v-container fluid v-if="poste.articles.length > 0" style="padding: 10px">
+                                                        <v-data-table :headers="articleHeaders" :items="poste.articles" class="elevation-1" hide-actions>
+                                                            <template slot="items" slot-scope="props">
+                                                                <td>{{ props.item.reference }}</td>
+                                                                <td>{{ props.item.designation }}</td>
+                                                                <td>{{ props.item.quantite }}</td>
+                                                                <td>{{ props.item.pubHT }} / {{ props.item.unitePrix }}</td>
+                                                                <td>{{ props.item.tauxTVA }}</td>
+                                                                <td>{{ calculMontant(props.item.quantite, props.item.pubHT)}}</td>
+                                                                <td>{{ props.item.montantMO }}</td>
+                                                                <td>{{ props.item.coutTotal }}</td>
+                                                                <td>
+                                                                    <v-btn depressed outline icon fab dark color="primary" small style="margin: 0" @click.prevent="editLigneArticle(props.item, poste, null)">
+                                                                        <v-icon>edit</v-icon>
+                                                                    </v-btn>
+                                                                    <v-btn depressed outline icon fab dark color="primary" small style="margin: 0">
+                                                                        <v-icon>euro_symbol</v-icon>
+                                                                    </v-btn>
+                                                                    <v-btn depressed outline icon fab dark color="pink" small style="margin: 0">
+                                                                        <v-icon>delete</v-icon>
+                                                                    </v-btn>
+                                                                </td>
+                                                            </template>
+                                                        </v-data-table>
+                                                    </v-container>
+                                                </v-layout>
+                                            </v-card>
+                                        </v-flex>
+                                        <v-flex lg12  v-for="sousPoste in poste.sousPostes" :key="sousPoste.id">
+                                            <v-card>
+                                                <v-card-title class="">
+                                                    <v-layout row>
+                                                        <h5 class="flex xs11 blue-grey  white--text">
+                                                            <span class="text-capitalize">{{ sousPoste.titre }}</span> ({{sousPoste.montantHT}}€ facturés - {{ sousPoste.montantMO}} heures MOE - {{ sousPoste.coutTotal}}€ d'achats)
+                                                        </h5>
+                                                        <div class="flex xs1" style="padding-top: 4px">
+                                                            <v-btn depressed outline icon fab dark color="primary" small  style="margin: 0" @click.prevent="sousPosteEdit(sousPoste)">
+                                                                <v-icon>edit</v-icon>
+                                                            </v-btn>
+                                                            <v-btn depressed outline icon fab dark color="pink" small style="margin: 0">
+                                                                <v-icon>delete</v-icon>
+                                                            </v-btn>
+                                                        </div>
                                                     </v-layout>
+                                                </v-card-title>
+                                                <v-layout row v-if="sousPoste.commentaire">
+                                                    <v-container style="padding-top: 2px; padding-bottom: 0; padding-left: 30px;">
+                                                        <p v-html="sousPoste.commentaire"></p>
+                                                    </v-container>
+                                                </v-layout>
+                                                <v-container fluid v-if="sousPoste.articles.length > 0" style="padding: 10px">
+                                                    <v-data-table :headers="articleHeaders" :items="sousPoste.articles" class="elevation-1" hide-actions>
+                                                        <template slot="items" slot-scope="props">
+                                                            <td>{{ props.item.reference }}</td>
+                                                            <td>{{ props.item.designation }}</td>
+                                                            <td>{{ props.item.quantite }}</td>
+                                                            <td>{{ props.item.pubHT }} / {{ props.item.unitePrix }}</td>
+                                                            <td>{{ props.item.tauxTVA }}</td>
+                                                            <td>{{ calculMontant(props.item.quantite, props.item.pubHT)}}</td>
+                                                            <td>{{ props.item.montantMO }}</td>
+                                                            <td>{{ props.item.coutTotal }}</td>
+                                                            <td>
+                                                                <v-btn depressed outline icon fab dark color="primary" small style="margin: 0" @click.prevent="editLigneArticle(props.item, poste, sousPoste)">
+                                                                    <v-icon>edit</v-icon>
+                                                                </v-btn>
+                                                                <v-btn depressed outline icon fab dark color="primary" small style="margin: 0">
+                                                                    <v-icon>euro_symbol</v-icon>
+                                                                </v-btn>
+                                                                <v-btn depressed outline icon fab dark color="pink" small style="margin: 0" @click.prevent="deleteArticle(props.item)">
+                                                                    <v-icon>delete</v-icon>
+                                                                </v-btn>
+                                                            </td>
+                                                        </template>
+                                                    </v-data-table>
                                                 </v-container>
-                                            </v-list-tile-content>
-                                        </v-list-tile>
-                                        <v-list-tile v-for="article in poste.articles" :key="article.id" v-if="poste.articles.length > 0">
-                                            <v-list-tile-content>
-                                                <v-container fluid>
-                                                    <LigneArticle :article="article"></LigneArticle>
-                                                </v-container>
-                                            </v-list-tile-content>
-                                        </v-list-tile>
-                                    </v-list>
-                                    <v-list subheader v-for="sousPoste in poste.sousPostes" :key="sousPoste.id">
-                                        <v-container>
-                                            <v-layout row>
-                                                <v-flex xs11>
-                                                    <h4 style="text-decoration: underline;"><span class="text-capitalize">{{ sousPoste.titre }}</span>  ({{sousPoste.montantHT}}€ facturés - {{ sousPoste.montantMO}} heures MOE - {{ sousPoste.coutTotal}}€ d'achats)</h4>
-                                                    <v-subheader v-if="sousPoste.commentaire">
-                                                        {{ sousPoste.commentaire }}
-                                                    </v-subheader>
-                                                </v-flex>
-                                                <v-flex xs1>
-                                                    <v-btn depressed outline icon fab dark color="primary" small  style="margin: 0" @click.prevent="sousPosteEdit(sousPoste)">
-                                                        <v-icon>edit</v-icon>
-                                                    </v-btn>
-                                                    <v-btn depressed outline icon fab dark color="pink" small style="margin: 0">
-                                                        <v-icon>delete</v-icon>
-                                                    </v-btn>
-                                                </v-flex>
-                                            </v-layout>
-                                        </v-container>
-                                        <v-container fluid v-if="sousPoste.articles.length > 0">
-                                            <v-layout row wrap>
-                                                <v-flex xs1>Référence</v-flex>
-                                                <v-flex xs2>Désignation</v-flex>
-                                                <v-flex xs1>Quantité</v-flex>
-                                                <v-flex xs2>PUB HT</v-flex>
-                                                <v-flex xs1>TVA</v-flex>
-                                                <v-flex xs1>Montant HT</v-flex>
-                                                <v-flex xs1>M.O.E</v-flex>
-                                                <v-flex xs1>Achats</v-flex>
-                                                <v-flex xs2></v-flex>
-                                            </v-layout>
-                                            <LigneSousPoste :poste="poste" :sousPoste="sousPoste"></LigneSousPoste>
-                                        </v-container>
-                                    </v-list>
+                                            </v-card>
+                                        </v-flex>
+                                    </v-layout>
                                 </v-card>
                             </v-expansion-panel-content>
                         </v-expansion-panel>
@@ -117,25 +171,30 @@
 </template>
 
 <script>
-
     import {mapGetters} from 'vuex'
     import _ from 'lodash'
-    import FormEstimationPoste from "./FormEstimationPoste";
-    import FormEstimationSousPoste from "./FormEstimationSousPoste";
-    import FormEstimationArticle from "./FormEstimationArticle";
-    import LigneSousPoste from './LigneSousPoste'
-    import LigneArticle from './LigneArticle'
-    import EditPoste from "./EditPoste";
-    import EditSousPoste from "./EditSousPoste";
-    import EditArticle from "./EditArticle";
+    import FormEstimationPoste from "./FormEstimationPoste"
+    import FormEstimationSousPoste from "./FormEstimationSousPoste"
+    import FormEstimationArticle from "./FormEstimationArticle"
+    import EditPoste from "./EditPoste"
+    import EditSousPoste from "./EditSousPoste"
+    import EditArticle from "./EditArticle"
 
     export default {
         name: "Estimation",
         components: {
-            EditArticle,
-            EditSousPoste,
-            EditPoste, FormEstimationArticle, FormEstimationSousPoste, FormEstimationPoste, LigneSousPoste, LigneArticle},
-        data(){
+            FormEstimationArticle, FormEstimationSousPoste, FormEstimationPoste, EditArticle, EditSousPoste, EditPoste
+        },
+        computed: {
+            ...mapGetters('estimation', {estimation: 'estimation'}),
+        },
+        mounted () {
+            this.$store.dispatch('estimation/loadEstimation', {id: this.$route.params.id})
+            this.$root.$on('closeRightDrawer', () => {
+                this.rightDrawer = false
+            })
+        },
+        data() {
             return {
                 modeDrawer: '',
                 rightDrawer: false,
@@ -143,24 +202,19 @@
                 editSousPoste: {},
                 editArticle: {},
                 editArticlePoste: '',
-                editArticleSousPoste: ''
+                editArticleSousPoste: '',
+                articleHeaders: [
+                    {text: 'Référence', value: 'reference'},
+                    {text: 'Désignation', value: 'designation'},
+                    {text: 'Quantité', value: 'quantite'},
+                    {text: 'P.U.B HT/unité', value: 'pubHT'},
+                    {text: 'TVA', value: 'tauxTVA'},
+                    {text: 'Montant HT', value: ''},
+                    {text: 'Main oeuvre', value: 'montantMO'},
+                    {text: 'Achats', value: 'coutTotal'},
+                    {text: '#', value: ''}
+                ]
             }
-        },
-        computed: {
-            ...mapGetters('estimation', {estimation: 'estimation'}),
-        },
-        mounted () {
-            this.$store.dispatch('estimation/loadEstimation', {id:this.$route.params.id})
-            this.$root.$on('closeRightDrawer', () => {
-                this.rightDrawer = false
-            })
-            this.$root.$on('editLigneArticle', (ligne, poste, sousPoste) => {
-                this.editArticle = _.cloneDeep(ligne)
-                this.editArticlePoste = poste
-                this.editArticleSousPoste = sousPoste
-                this.modeDrawer = 'editArticle'
-                this.rightDrawer = true
-            })
         },
         methods: {
             createPoste() {
@@ -184,11 +238,34 @@
                 this.editSousPoste = _.cloneDeep(sousPoste)
                 this.modeDrawer = 'editSousPoste'
                 this.rightDrawer = true
+            },
+            calculMontant(quantite, prix) {
+                return parseFloat(quantite) * parseFloat(prix)
+            },
+            editLigneArticle(article,poste, sousPoste) {
+                this.editArticle = _.cloneDeep(article)
+                this.editArticlePoste = poste.id
+                this.editArticleSousPoste = sousPoste ? sousPoste.id : ''
+                this.modeDrawer = 'editArticle'
+                this.rightDrawer = true
+            },
+            async deleteArticle(article) {
+                let res = await this.$confirm('Supprimer cette ligne ?', {title: 'Supprimer ?', color: 'red', buttonTrueText: 'Oui', buttonFalseText: 'Annuler'})
+                if(res) {
+                    this.$store.dispatch('estimation/deleteArticle', {estimation: this.$route.params.id, article: article.id}).then(() => {
+                        window.getApp.snackbar = {
+                            show: true,
+                            color: 'success',
+                            text: "Suppression réussie"
+                        };
+                    })
+                }
             }
         }
     }
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+    .v-expansion-panel__header
+      padding-left:0!important;
 </style>

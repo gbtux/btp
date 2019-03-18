@@ -111,7 +111,40 @@ class EstimationController extends AbstractController
         $form = $this->createForm(EventTaskType::class, $task);
         $form->submit($request->request->all());
         if($form->isSubmitted() && $form->isValid()){
+            $interval = date_diff($task->getDateFin(), $task->getDateDebut());
+            $nbday = $interval->format("%a") ;
+            $nbhour= $interval->format("%h") ;
+            $nbMin = $interval->format("%i");
+            $tothour = ($nbday*8) + $nbhour + ($nbMin/60); // on compte 8 heures dans 1 journée
+            //mise à jour des nbres d'heures estimation totale / poste / sous-poste / article
             $em = $this->getDoctrine()->getManager();
+
+            //article
+            $article = $task->getResource();
+            $aNb = $article->getMontantMO();
+            $article->setMontantMO($aNb + $tothour);
+            $em->persist($article);
+
+            //sous-poste
+            $ssPoste = $article->getSousPoste();
+            if($ssPoste) {
+                $spNb = $ssPoste->getMontantMO();
+                $ssPoste->setMontantMO($spNb + $tothour);
+                $em->persist($ssPoste);
+            }
+
+            //poste
+            $poste = $article->getPoste();
+            if($poste) {
+                $pNb = $poste->getMontantMO();
+                $poste->setMontantMO($pNb + $tothour);
+                $em->persist($poste);
+            }
+            //estimation
+            $eNb = $estimation->getMontantMO();
+            $estimation->setMontantMO($eNb + $tothour);
+            $em->persist($estimation);
+
             $em->persist($task);
             $em->flush();
             return $task;
@@ -132,10 +165,52 @@ class EstimationController extends AbstractController
         $task = $this->getDoctrine()->getRepository('App:EventTask')->findOneBy(['id'=>$id]);
         if(!$task)
             throw new NotFoundHttpException('Task not found');
+        //calcul ancien nbHeures
+        $oldInterval = date_diff($task->getDateFin(), $task->getDateDebut());
+        $oldNbday = $oldInterval->format("%a") ;
+        $oldNbhour= $oldInterval->format("%h") ;
+        $oldHours = ($oldNbday*8) + $oldNbhour ; // on compte 8 heures dans 1 journée
+
         $form = $this->createForm(EventTaskType::class, $task);
         $form->submit($request->request->all());
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
+
+            //calcul nouveau nombre d'heures
+            $interval = date_diff($task->getDateFin(), $task->getDateDebut());
+            $nbday = $interval->format("%a") ;
+            $nbhour= $interval->format("%h") ;
+            $nbMin = $interval->format("%i");
+            $tothour = ($nbday*8) + $nbhour + ($nbMin/60) ; // on compte 8 heures dans 1 journée
+
+            //mise à jour des nbres d'heures estimation totale / poste / sous-poste / article
+            //article
+            $article = $task->getResource();
+            $aNb = $article->getMontantMO();
+            $article->setMontantMO($aNb + $tothour - $oldHours);
+            $em->persist($article);
+
+            //sous-poste
+            $ssPoste = $article->getSousPoste();
+            if($ssPoste) {
+                $spNb = $ssPoste->getMontantMO();
+                $ssPoste->setMontantMO($spNb + $tothour - $oldHours);
+                $em->persist($ssPoste);
+            }
+
+            //poste
+            $poste = $article->getPoste();
+            if($poste) {
+                $pNb = $poste->getMontantMO();
+                $poste->setMontantMO($pNb + $tothour -$oldHours);
+                $em->persist($poste);
+            }
+            //estimation
+            $estimation = $task->getEstimation();
+            $eNb = $estimation->getMontantMO();
+            $estimation->setMontantMO($eNb + $tothour - $oldHours);
+            $em->persist($estimation);
+
             $em->persist($task);
             $em->flush();
             return $task;
@@ -191,10 +266,29 @@ class EstimationController extends AbstractController
         $article = $this->getDoctrine()->getRepository('App:DevisArticle')->findOneBy(['id'=>$aid]);
         if(!$article)
             throw new NotFoundHttpException('Article not found');
+        $oldMontantHT = $article->getQuantite() * $article->getPubHT();
         $form = $this->createForm(DevisArticleType::class, $article);
         $form->submit($request->request->all());
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
+
+            $poste = $article->getPoste();
+            $newMontantHT = $article->getQuantite() * $article->getPubHT();
+            $pHT = $poste->getMontantHT() - $oldMontantHT + $newMontantHT;
+            $poste->setMontantHT($pHT);
+            $em->persist($poste);
+
+            $sousPoste = $article->getSousPoste();
+            if(null !== $sousPoste) {
+                $spHT = $sousPoste - $oldMontantHT + $newMontantHT;
+                $sousPoste->setMontantHT($spHT);
+                $em->persist($sousPoste);
+            }
+
+            $eHT = $estimation->getTotalHT();
+            $estimation->setTotalHT($eHT - $oldMontantHT + $newMontantHT);
+            $em->persist($estimation);
+
             $em->persist($article);
             $em->flush();
 
@@ -229,17 +323,79 @@ class EstimationController extends AbstractController
         $form = $this->createForm(DevisArticleType::class, $article);
         $form->submit($request->request->all());
         if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $mHT = $article->getPubHT() * $article->getQuantite();
             if(null === $article->getSousPoste()){
                 $article->setPoste($poste);
+            }else{
+                $sousPoste = $article->getSousPoste();
+                $spht = $sousPoste->getMontantHT();
+                $spht += $mHT;
+                $sousPoste->setMontantHT($spht);
+                $em->persist($sousPoste);
             }
-            $em = $this->getDoctrine()->getManager();
+            $pht = $poste->getMontantHT();
+            $pht += $mHT;
+            $poste->setMontantHT($pht);
+            $em->persist($poste);
+
+            $eHT = $estimation->getTotalHT();
+            $estimation->setTotalHT($eHT + $mHT);
+            $em->persist($estimation);
+
             $em->persist($article);
+
             $em->flush();
 
             $estimation = $this->getDoctrine()->getRepository('App:Estimation')->findOneBy(['id'=>$id]);
             return $estimation;
         }
         return new Response((string) $form->getErrors(true, false), 500);
+    }
+
+    /**
+     * @param $estimationId
+     * @param $hashedId
+     * @param Hashids $hashids
+     * @Rest\Delete("/{estimationId}/article/{hashedId}")
+     * @Rest\View(serializerGroups={"simple","lignes"})
+     */
+    public function deleteArticle($estimationId, $hashedId, Hashids $hashids)
+    {
+        $id = $hashids->decode($estimationId);
+        $estimation = $this->getDoctrine()->getRepository('App:Estimation')->findOneBy(['id'=>$id]);
+        if(!$estimation)
+            throw new NotFoundHttpException('Estimation not found');
+        $aid = $hashids->decode($hashedId);
+        $article = $this->getDoctrine()->getRepository('App:DevisArticle')->findOneBy(['id'=>$aid]);
+        if(!$article)
+            throw new NotFoundHttpException('Article not found');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $mHT = $article->getPubHT() * $article->getQuantite();
+
+        $poste = $article->getPoste();
+        $pHt = $poste->getMontantHT();
+        $poste->setMontantHT($pHt - $mHT);
+        $em->persist($poste);
+
+        $sousPoste = $article->getSousPoste();
+        if($sousPoste) {
+            $spHT = $sousPoste->getMontantHT();
+            $sousPoste->setMontantHT($spHT - $mHT);
+            $em->persist($sousPoste);
+        }
+
+        $eHT = $estimation->getTotalHT();
+        $estimation->setTotalHT($eHT - $mHT);
+        $em->persist($estimation);
+
+        $em->remove($article);
+        $em->flush();
+
+        $estimation = $this->getDoctrine()->getRepository('App:Estimation')->findOneBy(['id'=>$id]);
+        return $estimation;
     }
 
 
