@@ -98,6 +98,13 @@ export default [
             /* webpackChunkName: "routes" */
             `../views/fournisseurs/Liste.vue`
             )
+    },{
+        path: '/fournisseurs/:id',
+        name: 'Fournisseur',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/fournisseurs/Fournisseur.vue`
+            )
     },
     {
         path: '/contacts',

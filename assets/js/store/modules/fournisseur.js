@@ -6,7 +6,9 @@ export default {
     namespaced: true,
     state: {
         fournisseurs: [],
-        fournisseur: {}
+        fournisseur: {
+            achats: []
+        }
     },
 
     getters: {
@@ -38,6 +40,9 @@ export default {
                 }
             })
             state.fournisseurs = fours
+        },
+        addAchat: function (state, {achat}) {
+            state.fournisseur.achats.push(achat)
         }
     },
 
@@ -89,6 +94,9 @@ export default {
                     reject()
                 })
             })
+        },
+        addAchat: function (context, {achat}) {
+            context.commit('addAchat', {achat: achat})
         }
     }
 

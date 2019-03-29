@@ -32,6 +32,7 @@
                 <v-text-field v-model="lbl.totalTVA20" label="Total TVA 20%" type="number" step="0.01"></v-text-field>
                 <v-text-field v-model="lbl.totalTTC" label="Total TTC" type="number" step="0.01"></v-text-field>
                 <v-text-field v-model="lbl.frais" label="Frais" type="number" step="0.01"></v-text-field>
+                <p v-if="lbl.document"><a :href="getDocument(lbl.document)" target="_blank">{{ getDocument(lbl.document) }}</a></p>
                 <div class="v-input v-text-field v-input--is-label-active v-input--is-dirty theme--light">
                     <div class="v-input__control">
                         <div class="v-input__slot">
@@ -115,6 +116,9 @@
             onFileSelected (event) {
                 this.lbl.document = event.target.files[0]
                 this.documentChange = true
+            },
+            getDocument(doc) {
+                return uri_prefix_bl + doc
             }
         }
     }

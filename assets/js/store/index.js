@@ -9,6 +9,7 @@ import fournisseur from './modules/fournisseur'
 import contact from './modules/contact'
 import livraison from './modules/livraison'
 import chantier from './modules/chantier'
+import achat from './modules/achat'
 
 export default new Vuex.Store({
     strict: true,
@@ -18,6 +19,7 @@ export default new Vuex.Store({
         fournisseur,
         contact,
         livraison,
-        chantier
+        chantier,
+        achat
     }
 })

@@ -56,9 +56,11 @@
                                         <v-btn depressed outline icon fab dark color="primary" small @click.prevent="edit(props.item.id)">
                                             <v-icon>edit</v-icon>
                                         </v-btn>
-                                        <v-btn depressed outline icon fab dark color="success" small style="margin: 0" @click.prevent="achats(props.item.id)">
-                                            <v-icon>euro_symbol</v-icon>
-                                        </v-btn>
+                                        <router-link :to="{name: 'Fournisseur', params:{id: props.item.id}}" tag="button" class="v-btn v-btn--floating v-btn--icon v-btn--outline v-btn--depressed v-btn--small theme--dark success--text">
+                                            <div class="v-btn__content">
+                                                <i aria-hidden="true" class="v-icon material-icons theme--dark">euro_symbol</i>
+                                            </div>
+                                        </router-link>
                                         <v-btn depressed outline icon fab dark color="pink" small>
                                             <v-icon>delete</v-icon>
                                         </v-btn>
@@ -129,9 +131,6 @@
                 this.modeDrawer = 'editFournisseur'
                 this.rightDrawer = true
                 this.currentSelected = id
-            },
-            achats(id) {
-                console.log(id)
             },
             createFournisseur(){
                 this.modeDrawer = 'createFournisseur'

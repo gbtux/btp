@@ -158,6 +158,8 @@ class Fournisseur
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\BordereauLivraison", mappedBy="fournisseur")
+     * @Serializer\Groups({"simple"})
+     * @ORM\OrderBy({"dateLivraison" = "DESC"})
      */
     private $bordereauLivraisons;
 

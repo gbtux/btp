@@ -13,13 +13,7 @@
                         full-width
                         min-width="290px"
                 >
-                    <v-text-field
-                            slot="activator"
-                            v-model="dateFormatted"
-                            label="Date de livraison"
-                            prepend-icon="event"
-                            readonly
-                    ></v-text-field>
+                    <v-text-field slot="activator" v-model="dateFormatted" label="Date de livraison" prepend-icon="event" readonly></v-text-field>
                     <v-date-picker v-model="bl.dateLivraison" @input="menuDate = false" locale="fr-fr"></v-date-picker>
                 </v-menu>
                 <v-select :items="fournisseurs" label="Fournisseur" outline item-text="raisonSociale" item-value="id" v-model="bl.fournisseur" required></v-select>
@@ -62,6 +56,7 @@
                     dateLivraison: '',
                     fournisseur: '',
                     contact: '',
+                    reference: '',
                     chantier: '',
                     totalHT: 0.00,
                     totalTVA55: 0.00,
@@ -105,7 +100,6 @@
                 })
             },
             onFileSelected (event) {
-                console.log(event.target.files[0])
                 this.bl.document = event.target.files[0]
             }
         }

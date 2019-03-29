@@ -43,7 +43,7 @@ class BlController extends AbstractController
             if(null !== $file){
                 $extension = $file->guessExtension();
                 $target = $this->getParameter('vich_uploader.mappings')['bl_document']['uri_prefix'];
-                $target = $this->getParameter('kernel.project_dir') . '/public' . $target;dump($target);
+                $target = $this->getParameter('kernel.project_dir') . '/public' . $target;
                 $filename = uniqid('document_', true) . '.' .$extension;
 
                 if($file->move($target, $filename)) {
