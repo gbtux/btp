@@ -44,7 +44,7 @@ export default {
     actions: {
         loadChantiers: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/chantiers').then(response => {
+                Vue.http.get(url_api + '/chantiers').then(response => {
                     context.commit('setChantiers', {chantiers: response.body})
                     resolve()
                 }, response => {
@@ -56,7 +56,7 @@ export default {
 
         loadChantier: async function (context, {chantierId}) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/chantiers/' + chantierId).then(response => {
+                Vue.http.get(url_api + '/chantiers/' + chantierId).then(response => {
                     context.commit('setChantier', {chantier: response.body})
                     resolve()
                 }, response => {
@@ -68,7 +68,7 @@ export default {
 
         createChantier: async function(context, {chantier}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/chantiers', JSON.stringify(chantier)).then(response => {
+                Vue.http.post(url_api + '/chantiers', JSON.stringify(chantier)).then(response => {
                     context.commit('addChantier', {chantier: response.body})
                     resolve()
                 }, response => {
@@ -79,7 +79,7 @@ export default {
         },
         saveChantier: async function(context, {chantierId, chantier}) {
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/chantiers/' + chantierId, {
+                Vue.http.put(url_api + '/chantiers/' + chantierId, {
                     libelle: chantier.libelle,
                     adresse1: chantier.adresse1,
                     adresse2: chantier.adresse2,

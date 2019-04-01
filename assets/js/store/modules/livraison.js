@@ -44,7 +44,7 @@ export default {
     actions: {
         loadLivraisons: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/livraisons').then(response => {
+                Vue.http.get(url_api + '/livraisons').then(response => {
                     context.commit('setLivraisons', {livraisons: response.body})
                     resolve()
                 }, response => {
@@ -55,7 +55,7 @@ export default {
         },
         loadLivraison: async function (context, {livraisonId}) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/livraisons/' + livraisonId).then(response => {
+                Vue.http.get(url_api + '/livraisons/' + livraisonId).then(response => {
                     context.commit('setLivraison', {livraison: response.body})
                     resolve()
                 }, response => {
@@ -80,7 +80,7 @@ export default {
             formData.append('chantier', livraison.chantier)
 
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/livraisons', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
+                Vue.http.post(url_api + '/livraisons', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => {
                     context.commit('addLivraison', {livraison: response.body})
                     resolve()
                 }, response => {
@@ -110,7 +110,7 @@ export default {
             formData.append('chantier', livraison.chantier)
 
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/livraisons/' + livraisonId, JSON.stringify(livraison)).then(response => {
+                Vue.http.put(url_api + '/livraisons/' + livraisonId, JSON.stringify(livraison)).then(response => {
                     context.commit('updateLivraison', {livraison: response.body})
                     resolve()
                 }, response => {

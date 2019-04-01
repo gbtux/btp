@@ -91,7 +91,7 @@ export default {
     actions: {
         loadEstimations: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/estimations').then(response => {
+                Vue.http.get(url_api + '/estimations').then(response => {
                     context.commit('setEstimations', {estimations: response.body})
                 }, response => {
                     console.log(response)
@@ -100,7 +100,7 @@ export default {
         },
 
         loadEstimation: async function (context, {id}) {
-            await Vue.http.get('/api/estimations/' + id).then(response => {
+            await Vue.http.get(url_api + '/estimations/' + id).then(response => {
                 context.commit('setEstimation', {estimation: response.body})
             }, response => {
                 console.log(response)
@@ -109,7 +109,7 @@ export default {
 
         createPoste: async function(context, {estimationId, poste}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/estimations/' + estimationId + '/poste', JSON.stringify(poste)).then(response => {
+                Vue.http.post(url_api + '/estimations/' + estimationId + '/poste', JSON.stringify(poste)).then(response => {
                     context.commit('addPoste', {poste: response.body})
                     resolve()
                 }, response => {
@@ -124,7 +124,7 @@ export default {
         },
         createSousPoste: async function(context, {estimationId, poste, sousPoste}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/estimations/' + estimationId + '/poste/' + poste + '/sousPoste', JSON.stringify(sousPoste)).then(response => {
+                Vue.http.post(url_api + '/estimations/' + estimationId + '/poste/' + poste + '/sousPoste', JSON.stringify(sousPoste)).then(response => {
                     context.commit('setEstimation', {estimation: response.body})
                     resolve()
                 }, response => {
@@ -139,7 +139,7 @@ export default {
         },
         createArticle: async function(context, {estimationId, poste, article}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/estimations/' + estimationId + '/poste/' + poste + '/article', JSON.stringify(article)).then(response => {
+                Vue.http.post(url_api + '/estimations/' + estimationId + '/poste/' + poste + '/article', JSON.stringify(article)).then(response => {
                     context.commit('setEstimation', {estimation: response.body})
                     resolve()
                 }, response => {
@@ -154,7 +154,7 @@ export default {
         },
         createCommentaire: async function(context, {estimationId, poste, commentaire}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/estimations/' + estimationId + '/poste/' + poste + '/commentaire', JSON.stringify(commentaire)).then(response => {
+                Vue.http.post(url_api + '/estimations/' + estimationId + '/poste/' + poste + '/commentaire', JSON.stringify(commentaire)).then(response => {
                     context.commit('setEstimation', {estimation: response.body})
                     resolve()
                 }, response => {
@@ -170,7 +170,7 @@ export default {
 
         updatePoste: async function(context, {poste}) {
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/estimations/poste/' + poste.id, {
+                Vue.http.put(url_api + '/estimations/poste/' + poste.id, {
                     titre: poste.titre,
                     commentaire: poste.commentaire
                 }).then(response => {
@@ -189,7 +189,7 @@ export default {
 
         updateSousPoste: async function(context, {estimation, sousPoste}) {
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/estimations/' + estimation + '/sousposte/' + sousPoste.id, {
+                Vue.http.put(url_api + '/estimations/' + estimation + '/sousposte/' + sousPoste.id, {
                     titre: sousPoste.titre,
                     commentaire: sousPoste.commentaire
                 }).then(response => {
@@ -208,7 +208,7 @@ export default {
 
         updateArticle: async function(context, {estimation, article}) {
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/estimations/' + estimation + '/article/' + article.id, {
+                Vue.http.put(url_api + '/estimations/' + estimation + '/article/' + article.id, {
                     reference: article.reference,
                     designation: article.designation,
                     quantite: article.quantite,
@@ -232,7 +232,7 @@ export default {
 
         loadRessources: async function (context, id) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/estimations/' + id +'/ressources').then(response => {
+                Vue.http.get(url_api + '/estimations/' + id +'/ressources').then(response => {
                     context.commit('setRessources', {ressources: response.body})
                     resolve()
                 }, response => {
@@ -248,7 +248,7 @@ export default {
 
         createTask: async function(context, {estimation, task}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/estimations/' + estimation +'/task', task).then(response => {
+                Vue.http.post(url_api + '/estimations/' + estimation +'/task', task).then(response => {
                     resolve()
                 }, response => {
                     reject()
@@ -263,7 +263,7 @@ export default {
 
         loadPersonnels: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/personnels').then(response => {
+                Vue.http.get(url_api + '/personnels').then(response => {
                     context.commit('setPersonnels', {personnels: response.body})
                 }, response => {
                     window.getApp.snackbar = {
@@ -277,7 +277,7 @@ export default {
 
         loadTasks: async function (context, id) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/estimations/' + id +'/tasks').then(response => {
+                Vue.http.get(url_api + '/estimations/' + id +'/tasks').then(response => {
                     context.commit('setTasks', {tasks: response.body})
                     resolve()
                 }, response => {
@@ -293,7 +293,7 @@ export default {
 
         updateTask: async function(context, {taskId, task}) {
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/estimations/' + taskId +'/task', task).then(response => {
+                Vue.http.put(url_api + '/estimations/' + taskId +'/task', task).then(response => {
                     resolve()
                 }, response => {
                     reject()
@@ -310,7 +310,7 @@ export default {
             delete estimation.postes
             delete estimation.id
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/estimations/' + estimationId , {
+                Vue.http.put(url_api + '/estimations/' + estimationId , {
                     totalHT: estimation.totalHT,
                     montantMO: estimation.montantMO,
                     coutTotal: estimation.coutTotal,
@@ -336,7 +336,7 @@ export default {
 
         createEstimation: async function(context, {estimation}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/estimations', estimation).then(response => {
+                Vue.http.post(url_api + '/estimations', estimation).then(response => {
                     context.commit('addEstimation', {estimation: response.body})
                     resolve()
                 }, response => {
@@ -352,7 +352,7 @@ export default {
 
         deleteArticle: async function(context, {estimation, article}) {
             return new Promise((resolve, reject) => {
-                Vue.http.delete('/api/estimations/'+ estimation + '/article/' + article).then(response => {
+                Vue.http.delete(url_api + '/estimations/'+ estimation + '/article/' + article).then(response => {
                     context.commit('setEstimation', {estimation: response.body})
                     resolve()
                 }, response => {

@@ -45,7 +45,7 @@ export default {
     actions: {
         loadPersonnels: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/personnels').then(response => {
+                Vue.http.get(url_api + '/personnels').then(response => {
                     context.commit('setPersonnels', {personnels: response.body})
                     resolve()
                 }, response => {
@@ -56,7 +56,7 @@ export default {
         },
         loadSpecialites: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/personnels/specialites').then(response => {
+                Vue.http.get(url_api + '/personnels/specialites').then(response => {
                     context.commit('setSpecialites', {specialites: response.body})
                     resolve()
                 }, response => {
@@ -68,7 +68,7 @@ export default {
 
         createPersonnel: async function(context, {personnel}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/personnels', JSON.stringify(personnel)).then(response => {
+                Vue.http.post(url_api + '/personnels', JSON.stringify(personnel)).then(response => {
                     context.commit('addPersonnel', {personnel: response.body})
                     resolve()
                 }, response => {
@@ -82,7 +82,7 @@ export default {
             let personnelId = personnel.id
             delete personnel.id
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/personnels/' + personnelId, {
+                Vue.http.put(url_api + '/personnels/' + personnelId, {
                     civilite: personnel.civilite,
                     coutHoraire: personnel.coutHoraire,
                     nom: personnel.nom,

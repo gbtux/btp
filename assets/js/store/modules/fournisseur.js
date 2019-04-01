@@ -49,7 +49,7 @@ export default {
     actions: {
         loadFournisseurs: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/fournisseurs').then(response => {
+                Vue.http.get(url_api + '/fournisseurs').then(response => {
                     context.commit('setFournisseurs', {fournisseurs: response.body})
                     resolve()
                 }, response => {
@@ -60,7 +60,7 @@ export default {
         },
         loadFournisseur: async function (context, {fournisseurId}) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/fournisseurs/' + fournisseurId).then(response => {
+                Vue.http.get(url_api + '/fournisseurs/' + fournisseurId).then(response => {
                     context.commit('setFournisseur', {fournisseur: response.body})
                     resolve()
                 }, response => {
@@ -71,7 +71,7 @@ export default {
         },
         createFournisseur: async function(context, {fournisseur}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/fournisseurs', JSON.stringify(fournisseur)).then(response => {
+                Vue.http.post(url_api + '/fournisseurs', JSON.stringify(fournisseur)).then(response => {
                     context.commit('addFournisseur', {fournisseur: response.body})
                     resolve()
                 }, response => {
@@ -86,7 +86,7 @@ export default {
             delete fournisseur.dateCreation
 
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/fournisseurs/' + fournisseurId, JSON.stringify(fournisseur)).then(response => {
+                Vue.http.put(url_api + '/fournisseurs/' + fournisseurId, JSON.stringify(fournisseur)).then(response => {
                     context.commit('updateFournisseur', {fournisseur: response.body})
                     resolve()
                 }, response => {

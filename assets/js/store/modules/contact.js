@@ -51,7 +51,7 @@ export default {
     actions: {
         loadContacts: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/contacts').then(response => {
+                Vue.http.get(url_api + '/contacts').then(response => {
                     context.commit('setContacts', {contacts: response.body})
                     resolve()
                 }, response => {
@@ -62,7 +62,7 @@ export default {
         },
         loadContact: async function (context, {contactId}) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/contacts/' + contactId).then(response => {
+                Vue.http.get(url_api + '/contacts/' + contactId).then(response => {
                     context.commit('setContact', {contact: response.body})
                     resolve()
                 }, response => {
@@ -73,7 +73,7 @@ export default {
         },
         createContact: async function(context, {contact}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/contacts', JSON.stringify(contact)).then(response => {
+                Vue.http.post(url_api + '/contacts', JSON.stringify(contact)).then(response => {
                     context.commit('addContact', {contact: response.body})
                     resolve()
                 }, response => {
@@ -86,7 +86,7 @@ export default {
             delete contact.id
 
             return new Promise((resolve, reject) => {
-                Vue.http.put('/api/contacts/' + contactId, JSON.stringify(contact)).then(response => {
+                Vue.http.put(url_api + '/contacts/' + contactId, JSON.stringify(contact)).then(response => {
                     context.commit('updateContact', {contact: response.body})
                     resolve()
                 }, response => {
@@ -98,7 +98,7 @@ export default {
 
         loadChantiers: function (context, {contact}) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/contacts/' + contact + '/chantiers').then(response => {
+                Vue.http.get(url_api + '/contacts/' + contact + '/chantiers').then(response => {
                     context.commit('setChantiers', {chantiers: response.body})
                     resolve()
                 }, response => {

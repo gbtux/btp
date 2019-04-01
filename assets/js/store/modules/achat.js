@@ -27,7 +27,7 @@ export default {
     actions: {
         loadCategories: async function (context) {
             return new Promise((resolve, reject) => {
-                Vue.http.get('/api/achats/categories').then(response => {
+                Vue.http.get(url_api + '/achats/categories').then(response => {
                     context.commit('setCategories', {categories: response.body})
                     resolve()
                 }, response => {
@@ -38,7 +38,7 @@ export default {
         },
         createAchat: async function(context, {achat}) {
             return new Promise((resolve, reject) => {
-                Vue.http.post('/api/achats', JSON.stringify(achat)).then(response => {
+                Vue.http.post(url_api + '/achats', JSON.stringify(achat)).then(response => {
                     context.commit('addAchat', {achat: response.body})
                     resolve(response.body)
                 }, response => {
