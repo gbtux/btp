@@ -157,7 +157,7 @@
                         </v-expansion-panel>
                     </v-card>
                 </v-flex>
-                <v-navigation-drawer class="setting-drawer" temporary right v-model="rightDrawer" hide-overlay fixed width="500">
+                <v-navigation-drawer class="setting-drawer" temporary right v-model="rightDrawer" hide-overlay fixed width="500" stateless>
                     <FormEstimationPoste :estimation="this.$route.params.id" v-if="modeDrawer === 'poste'"></FormEstimationPoste>
                     <FormEstimationSousPoste :estimation="this.$route.params.id" v-if="modeDrawer === 'sousPoste'"></FormEstimationSousPoste>
                     <FormEstimationArticle :estimation="this.$route.params.id" v-if="modeDrawer === 'article'"></FormEstimationArticle>

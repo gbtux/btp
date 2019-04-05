@@ -64,7 +64,7 @@
                 planningEvents: [
                     {
                         events(start, end, timezone, callback) {
-                            self.$http.get('/api/estimations/' + self.$route.params.id +'/tasks',
+                            self.$http.get(url_api + '/estimations/' + self.$route.params.id +'/tasks',
                                 {params:{
                                     start: start.format('YYYY-MM-DD HH:mm:ss'),
                                     end: end.format('YYYY-MM-DD HH:mm:ss')

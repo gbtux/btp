@@ -105,7 +105,7 @@ class DevisArticle
 
     /**
      * @var DevisPoste
-     * @ORM\ManyToOne(targetEntity="App\Entity\DevisPoste", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\DevisPoste", inversedBy="articles", fetch="EAGER")
      * @ORM\JoinColumn(nullable=true)
      */
     private $poste;

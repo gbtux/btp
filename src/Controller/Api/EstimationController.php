@@ -271,18 +271,24 @@ class EstimationController extends AbstractController
         $form->submit($request->request->all());
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
+	    	$newMontantHT = $article->getQuantite() * $article->getPubHT();
 
             $poste = $article->getPoste();
-            $newMontantHT = $article->getQuantite() * $article->getPubHT();
-            $pHT = $poste->getMontantHT() - $oldMontantHT + $newMontantHT;
-            $poste->setMontantHT($pHT);
-            $em->persist($poste);
-
+	    if($poste) {
+            	$pHT = $poste->getMontantHT() - $oldMontantHT + $newMontantHT;
+            	$poste->setMontantHT($pHT);
+            	$em->persist($poste);
+	    }
             $sousPoste = $article->getSousPoste();
             if(null !== $sousPoste) {
-                $spHT = $sousPoste - $oldMontantHT + $newMontantHT;
+                $spHT = $sousPoste->getMontantHT() - $oldMontantHT + $newMontantHT;
                 $sousPoste->setMontantHT($spHT);
-                $em->persist($sousPoste);
+		$em->persist($sousPoste);
+		//maj du poste correspondant au sous-poste
+		$pst = $sousPoste->getPoste();
+		$pHT = $pst->getMontantHT() - $oldMontantHT + $newMontantHT;
+		$pst->setMontantHT($pHT);
+		$em->persist($pst);
             }
 
             $eHT = $estimation->getTotalHT();
