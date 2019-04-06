@@ -78,6 +78,13 @@
             submit() {
                 this.$store.dispatch('estimation/createArticle', {estimationId: this.estimation, poste: this.poste, article: this.article}).then(() => {
                     this.poste = ''
+                    this.sousPoste = ''
+                    this.article.reference = ''
+                    this.article.designation = ''
+                    this.article.pubHT = ''
+                    this.article.unitePrix = ''
+                    this.article.tauxTVA = ''
+
                     this.$root.$emit('closeRightDrawer')
                 })
             },
@@ -90,11 +97,12 @@
                 })
             },
             referenceSelected(item) {
-                //this.article.reference = item.reference
-                this.article.designation = item.designation
-                this.article.pubHT = item.pubHT
-                this.article.unitePrix = item.unitePrix
-                this.article.tauxTVA = item.tauxTVA.toString()
+                if(typeof item === 'object') {
+                    this.article.designation = item.designation
+                    this.article.pubHT = item.pubHT
+                    this.article.unitePrix = item.unitePrix
+                    this.article.tauxTVA = item.tauxTVA.toString()
+                }
             }
         }
     }
