@@ -19,6 +19,15 @@ class DevisArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, DevisArticle::class);
     }
 
+    public function searchByReference($search)
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.reference LIKE :val')
+            ->setParameter('val', '%' . $search . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return DevisArticle[] Returns an array of DevisArticle objects
     //  */

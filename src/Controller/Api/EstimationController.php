@@ -56,6 +56,18 @@ class EstimationController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @Rest\Get("/references")
+     * @Rest\View(serializerGroups={"simple"})
+     */
+    public function searchReferences(Request $request)
+    {
+        $search = $request->get('search');
+        $articles = $this->getDoctrine()->getRepository('App:DevisArticle')->searchByReference($search);
+        return $articles;
+    }
+
+    /**
      * @Rest\Get("/{hashedId}/ressources")
      */
     public function getRessources($hashedId, Hashids $hashids)

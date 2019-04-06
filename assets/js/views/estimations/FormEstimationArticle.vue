@@ -4,8 +4,8 @@
         <v-form>
             <v-select :items="postes" label="Poste" outline item-text="titre" item-value="id" v-model="poste" required></v-select>
             <v-select :items="sousPostes" label="Sous Poste" outline item-text="titre" item-value="id" v-model="article.sousPoste"></v-select>
-            <v-text-field v-model="article.reference" label="Référence"></v-text-field>
-            <v-text-field v-model="article.designation" label="Désignation" required ></v-text-field>
+            <v-combobox v-model="article.reference" :items="references" :search-input.sync="searchReferences" hide-selected label="Référence" persistent-hint item-text="reference" item-value="id" v-on:change="referenceSelected"></v-combobox>
+            <v-textarea v-model="article.designation" label="Désignation" required></v-textarea>
             <v-text-field v-model="article.quantite" label="Quantité" type="number" required v-on:change="calculMontant"></v-text-field>
             <v-text-field v-model="article.pubHT" label="Pub HT (€)" v-on:change="calculMontant"></v-text-field>
             <v-select :items="unites" label="Unité" v-model="article.unitePrix"></v-select>
@@ -28,6 +28,8 @@
         },
         data() {
             return {
+                references: [],
+                searchReferences: null,
                 article: {
                     sousPoste: '',
                     reference: '',
@@ -61,7 +63,10 @@
             ...mapGetters('estimation', {postes: 'postes'})
         },
         watch: {
-          'poste' : 'getSousPostes'
+            'poste' : 'getSousPostes',
+            searchReferences (val) {
+                val && val !== this.article.reference && this.queryReferences(val)
+            }
         },
         methods: {
             getSousPostes() {
@@ -78,6 +83,18 @@
             },
             calculMontant() {
                 this.montantHT = parseFloat(this.article.quantite) * parseFloat(this.article.pubHT) //TODO : gerer les remises
+            },
+            queryReferences(v) {
+                this.$http.get(url_api + '/estimations/references?search=' + v).then(response => {
+                    this.references = response.data
+                })
+            },
+            referenceSelected(item) {
+                //this.article.reference = item.reference
+                this.article.designation = item.designation
+                this.article.pubHT = item.pubHT
+                this.article.unitePrix = item.unitePrix
+                this.article.tauxTVA = item.tauxTVA.toString()
             }
         }
     }

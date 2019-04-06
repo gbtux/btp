@@ -42,14 +42,14 @@ class DevisArticle
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Serializer\Groups({"lignes"})
+     * @Serializer\Groups({"lignes","simple"})
      */
     private $reference;
 
     /**
      * @var string
      * @ORM\Column(name="designation", type="text")
-     * @Serializer\Groups({"lignes"})
+     * @Serializer\Groups({"lignes","simple"})
      */
     private $designation;
 
@@ -63,7 +63,7 @@ class DevisArticle
     /**
      * @var float
      * @ORM\Column(name="pub_ht", type="float")
-     * @Serializer\Groups({"lignes"})
+     * @Serializer\Groups({"lignes","simple"})
      * @SerializedName("pubHT")
      */
     private $pubHT;
@@ -72,7 +72,7 @@ class DevisArticle
      * @var string
      * @ORM\Column(name="unite_prix", type="string")
      * @Assert\Choice(choices = {"forfait", "m2","ml","piece","m3","kg","inclus","offert"})
-     * @Serializer\Groups({"lignes"})
+     * @Serializer\Groups({"lignes","simple"})
      * @SerializedName("unitePrix")
      */
     private $unitePrix;
@@ -98,7 +98,7 @@ class DevisArticle
      *
      * @var float
      * @ORM\Column(name="taux_tva", type="float")
-     * @Serializer\Groups({"lignes"})
+     * @Serializer\Groups({"lignes","simple"})
      * @SerializedName("tauxTVA")
      */
     private $tauxTVA;
