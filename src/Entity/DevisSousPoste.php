@@ -83,6 +83,11 @@ class DevisSousPoste
      */
     private $ordre = 0;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $backgroundColor;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -211,6 +216,18 @@ class DevisSousPoste
     public function setCoutTotal(int $coutTotal): self
     {
         $this->coutTotal = $coutTotal;
+
+        return $this;
+    }
+
+    public function getBackgroundColor(): ?string
+    {
+        return $this->backgroundColor;
+    }
+
+    public function setBackgroundColor(?string $backgroundColor): self
+    {
+        $this->backgroundColor = $backgroundColor;
 
         return $this;
     }

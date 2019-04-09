@@ -7,6 +7,16 @@
                     <h4>Client : {{ estimation.client.fullname }}</h4>
                 </v-flex>
                 <v-flex lg12>
+                    <v-btn-toggle v-model="toggle_mode" @change="changeCalendarMode">
+                        <v-btn  value="taches" color="success">
+                            Mode tâches
+                        </v-btn>
+                        <v-btn value="estimation" color="orange" class="text--white">
+                            Mode estimation
+                        </v-btn>
+                    </v-btn-toggle>
+                </v-flex>
+                <v-flex lg12>
                     <v-card>
                         <full-calendar ref="fullcalendar" :config="planningConfig" :event-sources="planningEvents" @event-created="eventCreated" @event-selected="eventSelected" @event-resize="eventResize"></full-calendar>
                     </v-card>
@@ -41,13 +51,14 @@
         data(){
             var self = this
             return {
+                toggle_mode: 'taches',
                 modeDrawer: '',
                 rightDrawer: false,
                 currentSelected: {},
                 planningConfig: {
                     schedulerLicenseKey: "GPL-My-Project-Is-Open-Source",
                     locale: 'fr',
-                    defaultView: "timelineDay",
+                    defaultView: "timelineMonth",
                     contentHeight: 'auto',
                     height: 600,
                     minTime: "07:00:00",
@@ -55,10 +66,25 @@
                     header: {
                         left: "prev,next",
                         center: "title",
-                        right: "timelineDay,timelineWeek,timelineMonth"
+                        right: "timelineMonth,timelineWeek" //timelineDay,
                     },
                     resourceLabelText: "Tâches du projet",
-                    resourceGroupField: 'poste',
+                    //resourceGroupField: 'poste',
+                    resourceColumns: [
+                        {
+                            group: true,
+                            labelText: 'Poste',
+                            field: 'poste'
+                        },
+                        {
+                            labelText: 'Sousposte',
+                            field: 'title'
+                        },
+                        {
+                            labelText: 'Tâche',
+                            field: 'article'
+                        }
+                    ],
                     resources: []
                 },
                 planningEvents: [
@@ -72,22 +98,45 @@
                                     let data = response.body
                                     let tasks = []
                                     data.forEach( e => {
+                                        console.log(self.toggle_mode)
                                         let executants = "";
                                         e.executants.forEach(ex => {
                                             executants += ex.prenom + " " + ex.nom.substr(0,1) + ", "
                                         })
-                                        let task = {
-                                            id: e.id,
-                                            start: e.date_debut,
-                                            end: e.date_fin,
-                                            allDay: e.all_day,
-                                            title: executants,
-                                            resourceId: e.resource.id,
-                                            color: '#2196F3',
-                                            textColor: 'white',
-                                            executants: e.executants
+                                        if(self.toggle_mode === 'taches') {
+                                            let task = {
+                                                id: e.id,
+                                                start: e.date_debut,
+                                                end: e.date_fin,
+                                                allDay: e.all_day,
+                                                title: executants,
+                                                resourceId: e.resource.id,
+                                                textColor: 'white',
+                                                executants: e.executants,
+                                            }
+                                            if(e.isEstimatif){
+                                                task.rendering = 'background'
+                                                task.color =  '#FFE0B2'
+                                            }else{
+                                                task.color= '#2196F3'
+                                            }
+                                            tasks.push(task)
                                         }
-                                        tasks.push(task)
+                                        if(self.toggle_mode === 'estimation') {
+                                            if(e.isEstimatif) {
+                                                let task = {
+                                                    id: e.id,
+                                                    start: e.date_debut,
+                                                    end: e.date_fin,
+                                                    allDay: e.all_day,
+                                                    title: 'estimation',
+                                                    resourceId: e.resource.id,
+                                                    textColor: 'white',
+                                                    executants: e.executants,
+                                                }
+                                                tasks.push(task)
+                                            }
+                                        }
                                     })
                                     callback(tasks)
                                 })
@@ -119,6 +168,7 @@
         },
         methods: {
             eventCreated(...selected) { //...selected
+                //on va checker si c pas un event dans le background
                 this.currentSelected = selected
                 this.modeDrawer = 'creation'
                 this.rightDrawer = true
@@ -138,6 +188,9 @@
                 this.currentSelected = event
                 this.modeDrawer = 'edition'
                 this.rightDrawer = true
+            },
+            changeCalendarMode() {
+                this.$refs.fullcalendar.fireMethod('refetchEvents')
             }
         }
     }

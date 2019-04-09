@@ -78,19 +78,28 @@ class EstimationController extends AbstractController
             throw new NotFoundHttpException('Estimation not found');
         $res = [];
         foreach ($estimation->getPostes() as $poste ) {
-            $current = $poste->getTitre();
+            /*if(sizeof($poste->getSousPostes()) > 0) {
+                foreach ($poste->getSousPostes() as $ssPoste) {
+                    $articles = $ssPoste->getArticles();
+                    $children = [];
+                    foreach ($articles as $article) {
+                        $children[] = ['id' => $hashids->encode($article->getId()), 'title' => $article->getDesignation(), 'type' => 'article'];
+                    }
+                    $res[] = ['id' => $hashids->encode($ssPoste->getId()), 'title' => $ssPoste->getTitre(), 'poste' => $poste->getTitre(), 'children' => $children, 'type' => 'ssposte'];
+                }
+            }*/
+
             foreach ($poste->getArticles() as $article) {
-                $res[] = ['id' => $hashids->encode($article->getId()), 'title' => $article->getDesignation(), 'poste' => $current, 'type' => 'article'];
+                $res[] = ['id' => $hashids->encode($article->getId()), 'title' => '', 'article' => $article->getDesignation(), 'poste' => $poste->getTitre(), 'type' => 'article'];
             }
             foreach ($poste->getSousPostes() as $ssPoste) {
-                $cPoste = $current . ' - ' . $ssPoste->getTitre();
                 foreach ($ssPoste->getArticles() as $spArticle) {
-                    $res[] = ['id' => $hashids->encode($spArticle->getId()), 'title' => $spArticle->getDesignation(), 'poste' => $cPoste, 'type' => 'article'];
+                    $res[] = ['id' => $hashids->encode($spArticle->getId()), 'title' => $ssPoste->getTitre(), 'article' => $spArticle->getDesignation(), 'poste' => $poste->getTitre(), 'type' => 'article'];
                 }
             }
 
         }
-        return new JsonResponse($res);
+        return new JsonResponse(array_reverse($res));
     }
 
     /**
@@ -99,9 +108,13 @@ class EstimationController extends AbstractController
      */
     public function getTasks(Request $request, $hashedId, Hashids $hashids)
     {
+        $id = $hashids->decode($hashedId);
+        $estimation = $this->getDoctrine()->getRepository('App:Estimation')->findOneBy(['id'=>$id]);
+        if(!$estimation)
+            throw new NotFoundHttpException('Estimation not found');
         $rStart = $request->get('start');
         $rEnd = $request->get('end');
-        $tasks = $this->getDoctrine()->getRepository('App:EventTask')->searchByDates($rStart, $rEnd);
+        $tasks = $this->getDoctrine()->getRepository('App:EventTask')->searchByDates($estimation, $rStart, $rEnd);
         return $tasks;
     }
 

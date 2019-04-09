@@ -47,6 +47,9 @@ class EventTaskType extends AbstractType
                 },
                 'multiple' => true
             ])
+            ->add('isEstimatif')
+            ->add('isSousPosteExpandable')
+            ->add('isPosteExpandable')
         ;
     }
 

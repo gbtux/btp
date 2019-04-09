@@ -24,14 +24,16 @@ class EventTaskRepository extends ServiceEntityRepository
      * @param $dateStart
      * @param $dateEnd
      */
-    public function searchByDates($dateStart, $dateEnd)
+    public function searchByDates($estimation, $dateStart, $dateEnd)
     {
         return $this->createQueryBuilder('e')
             ->where('e.dateDebut >= :debut AND e.dateFin < :fin')
             ->orWhere('e.dateDebut < :fin AND e.dateFin > :fin')
             ->orWhere('e.dateDebut < :debut AND e.dateFin > :debut')
+            ->andWhere('e.estimation = :estimation')
             ->setParameter('debut', $dateStart)
             ->setParameter('fin', $dateEnd)
+            ->setParameter('estimation', $estimation)
             ->getQuery()
             ->getResult();
     }

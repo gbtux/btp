@@ -70,6 +70,28 @@ class EventTask
      */
     private $executants;
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @Serializer\Groups({"simple"})
+     * @SerializedName("isEstimatif")
+     */
+    private $isEstimatif = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Serializer\Groups({"simple"})
+     * @SerializedName("isSousPosteExpandable")
+     */
+    private $isSousPosteExpandable = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Serializer\Groups({"simple"})
+     * @SerializedName("isPosteExpandable")
+     */
+    private $isPosteExpandable = false;
+    
+
     public function __construct()
     {
         $this->executants = new ArrayCollection();
@@ -181,6 +203,42 @@ class EventTask
     public function setEstimation(?Estimation $estimation): self
     {
         $this->estimation = $estimation;
+
+        return $this;
+    }
+
+    public function getIsEstimatif(): ?bool
+    {
+        return $this->isEstimatif;
+    }
+
+    public function setIsEstimatif(bool $isEstimatif): self
+    {
+        $this->isEstimatif = $isEstimatif;
+
+        return $this;
+    }
+
+    public function getIsSousPosteExpandable(): ?bool
+    {
+        return $this->isSousPosteExpandable;
+    }
+
+    public function setIsSousPosteExpandable(bool $isSousPosteExpandable): self
+    {
+        $this->isSousPosteExpandable = $isSousPosteExpandable;
+
+        return $this;
+    }
+
+    public function getIsPosteExpandable(): ?bool
+    {
+        return $this->isPosteExpandable;
+    }
+
+    public function setIsPosteExpandable(bool $isPosteExpandable): self
+    {
+        $this->isPosteExpandable = $isPosteExpandable;
 
         return $this;
     }

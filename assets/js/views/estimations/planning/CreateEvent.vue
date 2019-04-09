@@ -114,11 +114,20 @@
                 </v-flex>
             </v-layout>
             <v-layout row wrap>
-                <v-flex xs12>
+                <v-flex xs12 style="padding-top: 0; padding-bottom: 0;">
                     <v-switch color="primary" v-model="allday" label='journée complète ?'></v-switch>
                 </v-flex>
+                <v-flex xs12 style="padding-top: 0; padding-bottom: 0;">
+                    <v-switch color="primary" v-model="isEstimatif" label='estimation ?'></v-switch>
+                </v-flex>
+                <v-flex xs12 style="padding-top: 0; padding-bottom: 0;" v-if="isEstimatif">
+                    <v-switch color="primary" v-model="isSousPosteExpandable" label='pour tout le sous poste ?'></v-switch>
+                </v-flex>
+                <v-flex xs12 style="padding-top: 0; padding-bottom: 0;" v-if="isEstimatif">
+                    <v-switch color="primary" v-model="isPosteExpandable" label='pour tout le poste ?'></v-switch>
+                </v-flex>
             </v-layout>
-            <v-layout row wrap>
+            <v-layout row wrap v-if="!isEstimatif">
                 <v-flex xs12>
                     <v-card
                             color="primary lighten-2"
@@ -174,6 +183,9 @@
                 allday: false,
                 executants: [],
                 isUpdating: false,
+                isEstimatif: false,
+                isSousPosteExpandable: false,
+                isPosteExpandable: false
             }
         },
         computed: {
@@ -247,7 +259,10 @@
                     allDay: this.allday,
                     commentaire: this.commentaire,
                     executants: this.executants,
-                    resource: this.event[0].resource.id
+                    resource: this.event[0].resource.id,
+                    isEstimatif: this.isEstimatif,
+                    isSousPosteExpandable: this.isSousPosteExpandable,
+                    isPosteExpandable: this.isPosteExpandable
                 }
                 this.$store.dispatch('estimation/createTask', {estimation: this.estimation, task: task}).then(() => {
                     this.$root.$emit('rerenderPlanningEvents')
