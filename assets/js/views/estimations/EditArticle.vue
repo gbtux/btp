@@ -74,6 +74,10 @@
             },
             submit() {
                 this.article.sousPoste = this.sousPoste
+                if(typeof this.article.reference === 'object') {
+                    let ref = this.article.reference.id
+                    this.article.reference = ref
+                }
                 this.$store.dispatch('estimation/updateArticle', {estimation: this.estimation, article: this.article}).then(() => {
                     this.$root.$emit('closeRightDrawer')
                 })
@@ -87,11 +91,15 @@
                 })
             },
             referenceSelected(item) {
-                //this.article.reference = item.reference
-                this.article.designation = item.designation
-                this.article.pubHT = item.pubHT
-                this.article.unitePrix = item.unitePrix
-                this.article.tauxTVA = item.tauxTVA.toString()
+                if(typeof item === 'object') {
+                    if (null !== item) {
+                        //this.article.reference = item.reference.id
+                        this.article.designation = item.designation
+                        this.article.pubHT = item.pubHT
+                        this.article.unitePrix = item.unitePrix
+                        this.article.tauxTVA = item.tauxTVA.toString()
+                    }
+                }
             }
 
         }

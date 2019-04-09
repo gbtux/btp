@@ -76,6 +76,10 @@
                 this.$root.$emit('closeRightDrawer')
             },
             submit() {
+                if( typeof this.article.reference === 'object') {
+                    let ref= this.article.reference.id
+                    this.article.reference = ref
+                }
                 this.$store.dispatch('estimation/createArticle', {estimationId: this.estimation, poste: this.poste, article: this.article}).then(() => {
                     this.poste = ''
                     this.sousPoste = ''
@@ -98,10 +102,12 @@
             },
             referenceSelected(item) {
                 if(typeof item === 'object') {
-                    this.article.designation = item.designation
-                    this.article.pubHT = item.pubHT
-                    this.article.unitePrix = item.unitePrix
-                    this.article.tauxTVA = item.tauxTVA.toString()
+                    if(null !== item) {
+                        this.article.designation = item.designation
+                        this.article.pubHT = item.pubHT
+                        this.article.unitePrix = item.unitePrix
+                        this.article.tauxTVA = item.tauxTVA.toString()
+                    }
                 }
             }
         }
