@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Bluemoon Admin Panel" />
+    <meta name="keywords" content="Admin, Dashboard, Bootstrap 4 Admin Dashboard, Bootstrap 4 Admin Template, Bootstrap 4 Admin Template, Sales, Admin Dashboard, Traffic, Tasks, Revenue, Orders, Invoices, Projects, Invoices, Dashboard, Bootstrap4, Sass, CSS3, HTML5, Responsive Dashboard, Responsive Admin Template, Admin Template, Best Admin Template, Bootstrap Template, Themeforest" />
+    <meta name="author" content="Bootstrap Gallery" />
+    <link rel="shortcut icon" href="{{ asset('invoice/img/favicon.ico') }}" />
+    <title>Devis ACB</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('invoice/css/bootstrap.min.css') }}" />
+    <!-- Icomoon Icons CSS -->
+    <link rel="stylesheet" href="{{ asset('invoice/fonts/icomoon/icomoon.css') }}" />
+    <!-- Master CSS -->
+    <link rel="stylesheet" href="{{ asset('invoice/css/main.css') }}" />
+
+</head>
+<body style="background: none;-webkit-print-color-adjust: exact !important;">
+    <div class="app-wrap">
+        <div class="app-container" style="margin: 0;">
+            <div class="main-content" style="padding: 0">
+
+                <!-- Row start -->
+                <div class="row-fluid gutters justify-content-center">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="invoice-container">
+
+                            <div class="invoice-header" style="border-bottom: 2px solid #000;">
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                        <img src="{{ asset('invoice/img/acb-sigle-noir.png') }}" class="invoice-logo" alt="ACB Logo" style="max-width: 150px" />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: right">
+                                        <!-- <p><strong>DEV-20190404-782</strong></p>
+                                        <p><strong>fait le 24/04/2019</strong></p> -->
+                                        <img src="{{ asset('invoice/img/rge.jpg') }}" class="invoice-logo" alt="RGE Logo" style="max-width: 150px" />
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+                            </div>
+
+                            <div class="invoice-address" style="border-bottom: 2px solid #f48431;">
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <small>Notre société,</small><br><br>
+                                        <h6>Aménagement Construction du Bâtiment</h6>
+                                        <address>
+                                            106 impasse de l'Aramon<br>
+                                            ZI LA FARLEDE BP 10373<br>
+                                            83085 TOULON CEDEX 9 <br>
+                                            Tél : 09 82 27 28 83 <br>
+                                            Email: contact@acb-var.com
+                                        </address>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <small>Votre contact,</small><br><br>
+                                        <h6>Bruno Fereira</h6>
+                                        <address>
+                                            Mobile: 06 98 05 12 52<br>
+                                        </address>
+                                        <h6>Laurent Andreani</h6>
+                                        <address>
+                                            Mobile: 07 63 05 25 64<br>
+                                        </address>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <small>Vous,</small><br><br>
+                                        <h6>SARL BETINA</h6>
+                                        <address>
+                                            191 AVENUE DE LA SOLANGE<br>
+                                            83130 La Garde<br>
+                                            Tél: 000-000-0000
+                                        </address>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
+                                        <div class="invoice-details">
+                                            <small>DEVIS</small><br>
+                                            <small>DEV-20190404-782</small><br>
+                                            <small>04 avril 2019</small><br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+                            </div>
+
+                            <div class="invoice-body">
+
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <p><b>Votre projet : Rénovation d'un immeuble</b></p>
+                                        <p>26, rue Paul Lendrin 83000 Toulon</p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Référence</th>
+                                                <th>Description</th>
+                                                <th>Quantité</th>
+                                                <th>PU HT</th>
+                                                <th>TVA</th>
+                                                <th>Total HT</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="6">Rénovation d'appartements type T2 ( 6 lots )</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>--</td>
+                                                    <td>LOT ELECTRICITE</td>
+                                                    <td>6.00</td>
+                                                    <td>3 450.00<br><span style="font-style: italic">forfaitaire</span></td>
+                                                    <td>10%<br><span style="font-style: italic">(2070.00)</span></td>
+                                                    <td>20 700.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>--</td>
+                                                    <td>LOT PLOMBERIE</td>
+                                                    <td>6.00</td>
+                                                    <td>3 040.00</td>
+                                                    <td>10%<br><span style="font-style: italic">(1 824.00)</span></td>
+                                                    <td>18 240.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>--</td>
+                                                    <td>LOT CLIMATISATION</td>
+                                                    <td>6.00</td>
+                                                    <td>1500.00</td>
+                                                    <td>10%<br><span style="font-style: italic">(900.00)</span></td>
+                                                    <td>9000.00</td>
+                                                </tr>
+                                                <!-- sous total -->
+                                                <tr>
+                                                    <td>Sous-total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>136 938.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+
+                                <!-- Row start -->
+                                <div class="invoice-payment">
+                                    <div class="row gutters">
+                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 order-last">
+                                            <table class="table no-border m-0">
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <p>
+                                                            <strong>Total Net HT</strong><br />
+                                                            TVA 10.00%<br />
+                                                            <strong>Montant total TTC</strong>
+                                                        </p>
+                                                        <!--<h5 class="text-danger"><strong>Grand Total</strong></h5>-->
+                                                    </td>
+                                                    <td>
+                                                        <p>
+                                                            <strong>212 408.00 €</strong><br />
+                                                            21 240.80 €<br />
+                                                            <strong>233 648.80 €</strong>
+                                                        </p>
+                                                        <!--<h5 class="text-danger"><strong>$1250.00</strong></h5>-->
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+
+                            </div>
+
+                            <div class="invoice-footer">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Row end -->
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
