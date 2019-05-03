@@ -33,6 +33,12 @@
                                         <v-layout row>
                                             <h3 class="flex xs11 indigo white--text" style="">
                                                 <span class="text-capitalize">{{ poste.titre }}</span> ({{poste.montantHT}}€ facturés - {{ poste.montantMO}} heures MOE - {{ poste.coutTotal}} € d'achats)
+                                                <v-btn depressed outline icon fab dark color="pink" small style="margin: 0; float: right;margin-top: -8px; margin-left: 5px;">
+                                                    <v-icon>delete</v-icon>
+                                                </v-btn>
+                                                <v-btn depressed outline icon fab dark color="white" small  style="margin: 0; float: right;margin-top: -8px;" @click.prevent="posteEdit(poste)">
+                                                    <v-icon>edit</v-icon>
+                                                </v-btn>
                                             </h3>
                                             <!--
                                             <v-toolbar dark color="primary" class="flex xs1">

@@ -6,7 +6,8 @@ export default {
     namespaced: true,
     state: {
         personnels: [],
-        specialites: []
+        specialites: [],
+        personnel: {}
     },
 
     getters: {
@@ -15,12 +16,18 @@ export default {
         },
         specialites: function (state) {
             return state.specialites
+        },
+        personnel: function (state) {
+            return state.personnel
         }
     },
 
     mutations: {
         setPersonnels: function (state, {personnels}) {
             state.personnels = personnels
+        },
+        setPersonnel: function (state, {personnel}) {
+            state.personnel = personnel
         },
         setSpecialites: function (state, {specialites}) {
             state.specialites = specialites
@@ -47,6 +54,17 @@ export default {
             return new Promise((resolve, reject) => {
                 Vue.http.get(url_api + '/personnels').then(response => {
                     context.commit('setPersonnels', {personnels: response.body})
+                    resolve()
+                }, response => {
+                    console.log(response)
+                    reject()
+                })
+            })
+        },
+        loadPersonnel: async function (context, {personnelId}) {
+            return new Promise((resolve, reject) => {
+                Vue.http.get(url_api + '/personnels/' + personnelId).then(response => {
+                    context.commit('setPersonnel', {personnel: response.body})
                     resolve()
                 }, response => {
                     console.log(response)
@@ -87,7 +105,11 @@ export default {
                     coutHoraire: personnel.coutHoraire,
                     nom: personnel.nom,
                     prenom: personnel.prenom,
-                    specialite: personnel.specialite ? personnel.specialite.id : null
+                    specialite: personnel.specialite ? personnel.specialite.id : null,
+                    adresse: personnel.adresse,
+                    telephone: personnel.telephone,
+                    codePostal: personnel.codePostal,
+                    ville: personnel.ville
                 }).then(response => {
                     context.commit('updatePersonnel', {personnel: response.body})
                     resolve()

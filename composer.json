@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "easycorp/easyadmin-bundle": "^2.1",
         "friendsofsymfony/rest-bundle": "^2.5",
+        "friendsofsymfony/user-bundle": "^2.1",
         "jms/serializer-bundle": "^3.1",
         "phpoffice/phpspreadsheet": "^1.6",
         "roukmoute/hashids-bundle": "^2.0",

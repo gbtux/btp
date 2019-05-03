@@ -5,6 +5,10 @@
             <v-select :items="civilites" label="Civilité" v-model="personnel.civilite" required></v-select>
             <v-text-field v-model="personnel.prenom" label="Prénom"></v-text-field>
             <v-text-field v-model="personnel.nom" label="Nom"></v-text-field>
+            <v-text-field v-model="personnel.telephone" label="Téléphone"></v-text-field>
+            <v-text-field v-model="personnel.adresse" label="Adresse"></v-text-field>
+            <v-text-field v-model="personnel.codePostal" label="Code postal"></v-text-field>
+            <v-text-field v-model="personnel.ville" label="Ville"></v-text-field>
             <v-text-field v-model="personnel.coutHoraire" label="Coût horaire" type="number"></v-text-field>
             <v-select :items="specialites" item-text="label" item-value="id" label="Spécialité" v-model="personnel.specialite"></v-select>
             <v-btn color="primary" @click="submit">Enregistrer</v-btn>
@@ -26,7 +30,11 @@
                     civilite: '',
                     prenom: '',
                     nom: '',
-                    coutHoraire: 0
+                    coutHoraire: 0,
+                    telephone: '',
+                    adresse: '',
+                    codePostal: '',
+                    ville: '',
                 }
             }
         },

@@ -68,6 +68,22 @@ class EstimationController extends AbstractController
     }
 
     /**
+     * @param $hashedId
+     * @param Hashids $hashids
+     * @Rest\Get("/{hashedId}/articles")
+     * @Rest\View(serializerGroups={"simple"})
+     */
+    public function getArticles($hashedId, Hashids $hashids)
+    {
+        $id = $hashids->decode($hashedId);
+        $estimation = $this->getDoctrine()->getRepository('App:Estimation')->findOneBy(['id'=>$id]);
+        if(!$estimation)
+            throw new NotFoundHttpException('Estimation not found');
+        $articles = $this->getDoctrine()->getRepository('App:DevisArticle')->findByEstimation($estimation);
+        return $articles;
+    }
+
+    /**
      * @Rest\Get("/{hashedId}/ressources")
      */
     public function getRessources($hashedId, Hashids $hashids)

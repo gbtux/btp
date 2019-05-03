@@ -37,6 +37,10 @@ class PersonnelType extends AbstractType
                     return $specialite ? $this->hashids->encode($specialite->getId()) : null;
                 }
             ])
+            ->add('telephone')
+            ->add('adresse')
+            ->add('codePostal')
+            ->add('ville')
         ;
     }
 

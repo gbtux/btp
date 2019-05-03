@@ -13,9 +13,9 @@
                     </v-card>
                 </v-flex>
                 <v-flex lg3 sm12 v-for="(personnel,index) in personnels" :key="index">
-                    <div class="name-card" @click="editPersonnel(personnel)" style="cursor: pointer">
+                    <div class="name-card">
                         <v-card ref="card">
-                            <v-card-text>
+                            <v-card-text @click="editPersonnel(personnel)" style="cursor: pointer">
                                 <div class="layout ma-0 align-center row">
                                     <v-avatar size="48" color="primary">
                                         <img :src="computeAvatar(personnel)">
@@ -26,6 +26,13 @@
                                     </div>
                                 </div>
                             </v-card-text>
+                            <v-card-actions>
+                                <router-link :to="{name: 'PersonnelDetails', params:{id: personnel.id}}" tag="button" class="v-btn v-btn--flat theme--light orange--text">
+                                    <div class="v-btn__content">
+                                        Voir la fiche complète
+                                    </div>
+                                </router-link>
+                            </v-card-actions>
                         </v-card>
                     </div>
                 </v-flex>

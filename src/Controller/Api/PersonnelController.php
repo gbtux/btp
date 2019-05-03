@@ -38,6 +38,21 @@ class PersonnelController extends AbstractController
     }
 
     /**
+     * @param $hashedId
+     * @param Hashids $hashids
+     * @Rest\Get("/{hashedId}")
+     * @Rest\View(serializerGroups={"simple"})
+     */
+    public function getPersonnel($hashedId, Hashids $hashids)
+    {
+        $id = $hashids->decode($hashedId);
+        $personnel = $this->getDoctrine()->getRepository('App:Personnel')->findOneBy(['id'=>$id]);
+        if(!$personnel)
+            throw new NotFoundHttpException('Personnel not found');
+        return $personnel;
+    }
+
+    /**
      * @param Request $request
      * @param $hashedId
      * @param Hashids $hashids

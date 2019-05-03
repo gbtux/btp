@@ -28,6 +28,13 @@ class DevisArticleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /*public function findByEstimation($estimation)
+    {
+        return $this->createQueryBuilder('d')
+            ->join('d.sousPoste','sp')
+            ->where('d.sousPoste = sp');
+    }
+
     // /**
     //  * @return DevisArticle[] Returns an array of DevisArticle objects
     //  */

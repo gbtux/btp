@@ -76,6 +76,14 @@ export default [
         )
     },
     {
+        path: '/estimations/:id/kanban',
+        name: 'Kanban',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/estimations/kanban/Kanban.vue`
+            )
+    },
+    {
         path: '/estimations/:id',
         name: 'Estimation',
         component: () => import(
@@ -89,6 +97,14 @@ export default [
         component: () => import(
             /* webpackChunkName: "routes" */
             `../views/personnels/Liste.vue`
+            )
+    },
+    {
+        path: '/personnels/:id',
+        name: 'PersonnelDetails',
+        component: () => import(
+            /* webpackChunkName: "routes" */
+            `../views/personnels/PersonnelDetails.vue`
             )
     },
     {

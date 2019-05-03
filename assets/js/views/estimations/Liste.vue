@@ -70,6 +70,11 @@
                                                 <i aria-hidden="true" class="v-icon material-icons theme--dark">date_range</i>
                                             </div>
                                         </router-link>
+                                        <router-link :to="{name: 'Kanban', params:{id: props.item.id}}" tag="button" class="v-btn v-btn--floating v-btn--icon v-btn--outline v-btn--depressed v-btn--small theme--dark orange--text">
+                                            <div class="v-btn__content">
+                                                <i aria-hidden="true" class="v-icon material-icons theme--dark">date_range</i>
+                                            </div>
+                                        </router-link>
                                         <v-btn depressed outline icon fab dark color="pink" small>
                                             <v-icon>delete</v-icon>
                                         </v-btn>

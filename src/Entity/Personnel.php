@@ -75,6 +75,31 @@ class Personnel
      */
     private $taches;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"simple"})
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=6, nullable=true)
+     * @SerializedName("codePostal")
+     * @Serializer\Groups({"simple"})
+     */
+    private $codePostal;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"simple"})
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Serializer\Groups({"simple"})
+     */
+    private $telephone;
+
     public function __construct()
     {
         $this->taches = new ArrayCollection();
@@ -203,6 +228,54 @@ class Personnel
     public function setCivilite(string $civilite): self
     {
         $this->civilite = $civilite;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(?string $codePostal): self
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

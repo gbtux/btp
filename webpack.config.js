@@ -18,9 +18,14 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
-
+    .addStyleEntry('security', [
+        './assets/security/vendor/bootstrap/css/bootstrap.min.css',
+        './assets/security/fonts/font-awesome-4.7.0/css/font-awesome.min.css',
+        './assets/security/fonts/iconic/css/material-design-iconic-font.min.css',
+        './assets/security/css/util.css',
+        './assets/security/css/main.css'
+    ])
+    .addStyleEntry('roboto','./assets/css/roboto.css')
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
